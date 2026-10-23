@@ -44,13 +44,13 @@
       flex-direction: column;
     }
     
-    /* ส่วนหัว: แถบเมนู และ ปุ่มเปลี่ยนภาษา */
+    /* ส่วนหัว: แถบเมนู และ ปุ่มเปลี่ยนภาษาโลโก้ลูกโลก */
     .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .nav-tabs { display: flex; gap: 8px; background: var(--bg-color); padding: 6px; border-radius: 30px; flex: 1; }
     .nav-btn { flex: 1; border: none; background: transparent; padding: 8px 4px; border-radius: 20px; font-family: 'Kanit', sans-serif; font-weight: 500; font-size: 13px; color: var(--text-light); cursor: pointer; transition: all 0.3s ease; text-align: center; }
     .nav-btn.active { background-color: var(--pastel-blue-dark); color: var(--white); box-shadow: 0 4px 10px rgba(137, 207, 240, 0.4); }
     
-    .lang-toggle-btn { background: var(--pastel-yellow-dark); border: none; padding: 8px 12px; border-radius: 20px; font-family: 'Kanit', sans-serif; font-weight: 600; font-size: 12px; color: #9D8A00; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s; white-space: nowrap; margin-left: 8px; }
+    .lang-toggle-btn { background: var(--pastel-yellow-dark); border: none; padding: 8px 14px; border-radius: 20px; font-family: 'Kanit', sans-serif; font-weight: 600; font-size: 13px; color: #9D8A00; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s; white-space: nowrap; margin-left: 8px; display: inline-flex; align-items: center; gap: 5px; }
     .lang-toggle-btn:hover { background-color: var(--pastel-yellow); }
 
     .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
@@ -152,14 +152,14 @@
 <body>
 
 <div class="app-container">
-  <!-- ส่วนหัวเว็บ: แท็บเมนู และปุ่มสลับภาษา -->
+  <!-- ส่วนหัวเว็บ: แท็บเมนู และปุ่มเปลี่ยนภาษาลูกโลก -->
   <div class="top-header">
     <div class="nav-tabs">
       <button class="nav-btn active" onclick="openTab('homeTab', this)" data-key="tabHome">🏠 หน้าหลัก</button>
       <button class="nav-btn" onclick="openTab('paymentTab', this)" data-key="tabPayment">💸 ชำระเงิน</button>
       <button class="nav-btn" onclick="openTab('statusTab', this)" data-key="tabStatus">🚚 สถานะ</button>
     </div>
-    <button class="lang-toggle-btn" onclick="toggleLanguage()">🇬🇧 EN / TH</button>
+    <button class="lang-toggle-btn" onclick="toggleLanguage()">🌐 <span id="langLabel">TH / EN</span></button>
   </div>
 
   <!-- หน้าแรก -->
@@ -208,7 +208,7 @@
 
       <form class="payment-form" id="payForm" onsubmit="handleFormSubmit(event)">
         
-        <!-- เลขออเดอร์พร้อมปุ่มคัดลอก -->
+        <!-- เลขออเดอร์พร้อมปุ่มคัดลอกพื้นหลังขาว ตัวอักษรสีฟ้า -->
         <div class="form-group">
           <label data-key="labelOrderId">เลขออเดอร์</label>
           <div class="order-input-wrapper">
@@ -290,7 +290,6 @@
 <script>
   const API_URL = "https://script.google.com/macros/s/AKfycbxd3o-7Jv3XvKhYJ83ulEO7p_3brqXfXveGaQWHAPU-lBJHW3mIR1rY0XYFW-2vtWfn/exec";
 
-  // พจนานุกรม 2 ภาษา (ไทย - อังกฤษ)
   const translations = {
     th: {
       tabHome: "🏠 หน้าหลัก",
@@ -384,6 +383,7 @@
 
   function toggleLanguage() {
     currentLang = currentLang === 'th' ? 'en' : 'th';
+    document.getElementById('langLabel').innerText = currentLang === 'th' ? 'TH / EN' : 'EN / TH';
     updateTexts();
   }
 
