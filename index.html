@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BYLEE Store</title>
+  
+  <!-- นำเข้าฟอนต์ Kanit จาก Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* กำหนดตัวแปรสี ธีมพาสเทล ฟ้า-เหลือง */
+    :root {
+      --pastel-blue: #BFE6FF;
+      --pastel-blue-dark: #89CFF0;
+      --pastel-yellow: #FFF9C4;
+      --pastel-yellow-dark: #FFF59D;
+      --bg-color: #F0F8FF; /* AliceBlue */
+      --text-color: #4A4A4A;
+      --text-light: #718096;
+      --white: #FFFFFF;
+      --border-radius-lg: 25px;
+      --border-radius-md: 15px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Kanit', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 15px;
+      background-image: radial-gradient(var(--pastel-blue-dark) 1.5px, transparent 1.5px);
+      background-size: 25px 25px;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 420px;
+      background-color: var(--white);
+      border-radius: var(--border-radius-lg);
+      padding: 25px 20px;
+      box-shadow: 0 10px 30px rgba(137, 207, 240, 0.2);
+      border: 3px dashed var(--pastel-blue-dark);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      background: var(--bg-color);
+      padding: 8px;
+      border-radius: 30px;
+      margin-bottom: 25px;
+    }
+
+    .nav-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 10px 5px;
+      border-radius: 20px;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-btn.active {
+      background-color: var(--pastel-blue-dark);
+      color: var(--white);
+      box-shadow: 0 4px 10px rgba(137, 207, 240, 0.4);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    .tab-content.active { display: block; }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2.page-title {
+      text-align: center;
+      color: #5BA4E5;
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .home-layout { text-align: center; }
+    .hero-image {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid var(--pastel-yellow);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      margin: 10px auto 20px auto;
+      display: block;
+    }
+    .badge-info {
+      background-color: var(--pastel-yellow-dark);
+      color: #9D8A00;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 15px;
+      font-weight: 500;
+      display: inline-block;
+      margin-bottom: 25px;
+    }
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background-color: var(--white);
+      color: #1DA1F2;
+      text-decoration: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 16px;
+      border: 2px solid var(--pastel-blue);
+      box-shadow: 0 4px 10px rgba(137, 207, 240, 0.2);
+      transition: all 0.2s;
+    }
+    .social-btn:hover {
+      transform: translateY(-3px);
+      background-color: var(--pastel-blue);
+      color: var(--white);
+    }
+    .x-icon { font-weight: bold; font-size: 18px; }
+
+    .warning-box {
+      background-color: var(--pastel-yellow);
+      border: 1px dashed #F4D03F;
+      color: #B8860B;
+      padding: 12px;
+      border-radius: var(--border-radius-md);
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .bank-card {
+      background: linear-gradient(135deg, var(--pastel-blue) 0%, var(--pastel-yellow) 100%);
+      padding: 15px;
+      border-radius: var(--border-radius-md);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .bank-info-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .bank-logo {
+      width: 45px;
+      height: 45px;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      border-radius: 10px;
+      padding: 2px;
+    }
+    .bank-details h4 { margin: 0; color: #1E3A8A; font-size: 14px; }
+    .bank-details h3 { margin: 2px 0; color: #1E3A8A; font-size: 18px; letter-spacing: 1px; }
+    .bank-details p { margin: 0; font-size: 13px; color: #555; }
+    
+    .btn-copy {
+      background: white;
+      color: var(--pastel-blue-dark);
+      border: 2px solid white;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-copy:hover { background: var(--pastel-blue-dark); color: white; }
+
+    .payment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .form-group.row { flex-direction: row; gap: 10px; }
+    .form-group.row > div { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+    
+    label { font-size: 13px; font-weight: 500; color: #5BA4E5; padding-left: 5px; }
+    
+    input, textarea {
+      padding: 12px;
+      border: 2px solid var(--pastel-blue);
+      border-radius: 12px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 14px;
+      background-color: #FAFAFA;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus { border-color: var(--pastel-blue-dark); background-color: white; }
+    input[readonly] { background-color: var(--pastel-blue); color: #1E3A8A; font-weight: 600; }
+    
+    input[type="file"] {
+      padding: 10px;
+      background: white;
+      border: 2px dashed var(--pastel-blue-dark);
+      cursor: pointer;
+    }
+
+    .btn-submit {
+      background-color: var(--pastel-blue-dark);
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 25px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 4px 12px rgba(137, 207, 240, 0.4);
+      transition: transform 0.2s;
+    }
+    .btn-submit:hover { transform: translateY(-2px); }
+
+    .search-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .search-container input { flex: 1; margin: 0; }
+    .btn-search {
+      background-color: var(--pastel-yellow-dark);
+      color: #9D8A00;
+      border: none;
+      padding: 0 20px;
+      border-radius: 12px;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .result-box {
+      background-color: var(--bg-color);
+      border: 2px solid var(--pastel-blue);
+      border-radius: var(--border-radius-md);
+      padding: 20px;
+      text-align: left;
+      display: none;
+    }
+    .result-box h3 { margin-bottom: 10px; }
+
+    .toast {
+      position: fixed;
+      bottom: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(30, 58, 138, 0.9);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-size: 14px;
+      z-index: 1000;
+      transition: bottom 0.4s cubic-bezier(0.68, -0.55, 0.26, 1.55);
+      white-space: nowrap;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .toast.show { bottom: 30px; }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  
+  <div class="nav-tabs">
+    <button class="nav-btn active" onclick="openTab('homeTab', this)">🏠 หน้าหลัก</button>
+    <button class="nav-btn" onclick="openTab('paymentTab', this)">💸 ชำระเงิน</button>
+    <button class="nav-btn" onclick="openTab('statusTab', this)">🚚 สถานะ</button>
+  </div>
+
+  <!-- หน้าแรก -->
+  <div id="homeTab" class="tab-content active home-layout">
+    <h2 class="page-title">✨ BYLEE ✨</h2>
+    <img src="https://t1.blockdit.com/photos/2020/11/5fb952383d4b9b0cc0fd7d2e_800x0xcover_3aaaqsST.jpg" alt="Shin-chan" class="hero-image">
+    <div class="badge-info">ส่งสินค้าทุกวันเสาร์ - อาทิตย์ 📦</div>
+    <div>
+      <a href="https://x.com/custhesun" target="_blank" class="social-btn">
+        <span class="x-icon">𝕏</span> @custhesun
+      </a>
+    </div>
+  </div>
+
+  <!-- หน้าชำระเงิน -->
+  <div id="paymentTab" class="tab-content">
+    <h2 class="page-title">💸 Payment 💸</h2>
+    <div class="warning-box">
+      ⚠️ โอนผิด โอนใหม่ ไม่โอนคืนนะคะ! <br>รบกวนเช็คชื่อและเลขบัญชีให้ดีก่อนโอนน้า 💛
+    </div>
+
+    <div class="bank-card">
+      <div class="bank-info-left">
+        <img src="https://i.pinimg.com/564x/1a/9f/a5/1a9fa59de070d1ff9a1d86e01e1ba749.jpg" alt="BBL Logo" class="bank-logo">
+        <div class="bank-details">
+          <h4>BBL (ธ.กรุงเทพ)</h4>
+          <h3>907-0-402749</h3>
+          <p>Onwarang Su.</p>
+        </div>
+      </div>
+      <button class="btn-copy" onclick="copyAccNumber()">คัดลอก</button>
+    </div>
+
+    <form class="payment-form" id="payForm" onsubmit="handleFormSubmit(event)">
+      <div class="form-group">
+        <label>เลขออเดอร์ (อัตโนมัติ)</label>
+        <input type="text" id="orderIdField" readonly>
+      </div>
+
+      <div class="form-group">
+        <label>ชื่อ-นามสกุล</label>
+        <input type="text" id="nameField" required placeholder="ชื่อผู้รับพัสดุ">
+      </div>
+
+      <div class="form-group">
+        <label>ที่อยู่จัดส่ง</label>
+        <textarea id="addressField" rows="2" required placeholder="บ้านเลขที่, ตำบล, อำเภอ, จังหวัด, รหัสไปรษณีย์"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>ช่องทางติดต่อ (X, Line)</label>
+        <input type="text" id="contactField" required placeholder="เช่น @custhesun">
+      </div>
+
+      <div class="form-group">
+        <label>เบอร์โทรศัพท์</label>
+        <input type="tel" id="phoneField" required placeholder="08X-XXX-XXXX">
+      </div>
+
+      <div class="form-group row">
+        <div>
+          <label>วันที่โอน</label>
+          <input type="date" id="dateField" required>
+        </div>
+        <div>
+          <label>เวลาที่โอน</label>
+          <input type="time" id="timeField" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>แนบรูปสลิป</label>
+        <input type="file" accept="image/*" required>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">ยืนยันการแจ้งโอน ✨</button>
+    </form>
+  </div>
+
+  <!-- หน้าเช็คสถานะ -->
+  <div id="statusTab" class="tab-content">
+    <h2 class="page-title">🚚 เช็คสถานะ 🚚</h2>
+    <label style="margin-bottom: 5px; display:block;">กรอกเลขออเดอร์ของคุณ</label>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="เช่น XH123456">
+      <button class="btn-search" onclick="searchStatus()">ค้นหา 🔍</button>
+    </div>
+    <div id="statusResult" class="result-box"></div>
+  </div>
+
+</div>
+
+<div id="toastMessage" class="toast">ข้อความ</div>
+
+<script>
+  // เชื่อมต่อกับ Google Apps Script Web App URL ที่คุณให้มา
+  const API_URL = "https://script.google.com/macros/s/AKfycbwwN7BS0_vZux4W57D_WRE6qifzFOxicg4I3pS0F8jY1r6oTCZnmtDgzd3-hxgZxHcT/exec";
+
+  function generateOrderNumber() {
+    const randomNum = Math.floor(100000 + Math.random() * 900000);
+    return "XH" + randomNum;
+  }
+
+  function openTab(tabId, btnElement) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    btnElement.classList.add('active');
+
+    if(tabId === 'paymentTab') {
+      const orderField = document.getElementById('orderIdField');
+      if(orderField.value === "") {
+        orderField.value = generateOrderNumber();
+      }
+    }
+  }
+
+  let toastTimeout;
+  function showToast(msg) {
+    const toast = document.getElementById("toastMessage");
+    toast.innerText = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => { toast.classList.remove("show"); }, 3000);
+  }
+
+  function copyAccNumber() {
+    const tempInput = document.createElement("input");
+    tempInput.value = "9070402749";
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+    showToast("📋 คัดลอกเลขบัญชี 907-0-402749 สำเร็จ!");
+  }
+
+  function handleFormSubmit(event) {
+    event.preventDefault();
+    const btn = document.getElementById("submitBtn");
+    btn.innerText = "กำลังส่งข้อมูล... ⏳";
+    btn.disabled = true;
+
+    const params = new URLSearchParams({
+      action: 'save',
+      orderId: document.getElementById('orderIdField').value,
+      name: document.getElementById('nameField').value,
+      address: document.getElementById('addressField').value,
+      contact: document.getElementById('contactField').value,
+      phone: document.getElementById('phoneField').value,
+      date: document.getElementById('dateField').value,
+      time: document.getElementById('timeField').value
+    });
+
+    fetch(API_URL + '?' + params.toString())
+      .then(res => res.json())
+      .then(data => {
+        if(data.success) {
+          showToast("🎉 แจ้งชำระเงินเรียบร้อยแล้ว ขอบคุณค่ะ!");
+          document.getElementById("payForm").reset();
+          document.getElementById("orderIdField").value = generateOrderNumber();
+          setTimeout(() => { document.querySelector('.nav-btn').click(); }, 1500);
+        } else {
+          showToast("❌ เกิดข้อผิดพลาด กรุณาลองใหม่");
+        }
+        btn.innerText = "ยืนยันการแจ้งโอน ✨";
+        btn.disabled = false;
+      })
+      .catch(() => {
+        showToast("❌ เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ");
+        btn.innerText = "ยืนยันการแจ้งโอน ✨";
+        btn.disabled = false;
+      });
+  }
+
+  function searchStatus() {
+    const input = document.getElementById("searchInput").value.trim();
+    const resultBox = document.getElementById("statusResult");
+    
+    if(input === "") {
+      showToast("⚠️ กรุณากรอกเลขออเดอร์ก่อนนะคะ");
+      return;
+    }
+    
+    resultBox.style.display = "block";
+    resultBox.innerHTML = "กำลังค้นหา... ⏳";
+
+    fetch(API_URL + '?action=check&orderId=' + input)
+      .then(res => res.json())
+      .then(data => {
+        if(data.found) {
+          resultBox.innerHTML = `
+            <h3 style="color: #38A169;">📌 สถานะ: ${data.status}</h3>
+            <p><b>เลขออเดอร์:</b> ${input.toUpperCase()}</p>
+            <p style="margin-top: 10px; color: #718096; font-size: 14px;">ขอบคุณที่อุดหนุนร้าน BYLEE นะคะ 💛</p>
+          `;
+        } else {
+          resultBox.innerHTML = `<span style='color: #E53E3E;'>❌ ไม่พบออเดอร์ ${input.toUpperCase()} ในระบบ รบกวนตรวจสอบเลขอีกครั้งนะคะ 🥺</span>`;
+        }
+      })
+      .catch(() => {
+        resultBox.innerHTML = `<span style='color: #E53E3E;'>❌ เกิดข้อผิดพลาดในการเชื่อมต่อข้อมูล</span>`;
+      });
+  }
+</script>
+
+</body>
+</html>
