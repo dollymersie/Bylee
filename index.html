@@ -57,8 +57,6 @@
     .social-btn:hover { transform: translateY(-3px); background-color: var(--pastel-blue); color: var(--white); }
     .x-icon { font-weight: bold; font-size: 18px; }
     .warning-box { background-color: var(--pastel-yellow); border: 1px dashed #F4D03F; color: #B8860B; padding: 12px; border-radius: var(--border-radius-md); font-size: 14px; text-align: center; margin-bottom: 20px; }
-    
-    /* สไตล์กล่องการ์ดสีฟ้า/เหลือง (ใช้ร่วมกันทั้งบัญชีและเลขออเดอร์) */
     .bank-card { background: linear-gradient(135deg, var(--pastel-blue) 0%, var(--pastel-yellow) 100%); padding: 15px; border-radius: var(--border-radius-md); display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
     .bank-info-left { display: flex; align-items: center; gap: 15px; }
     .bank-logo { width: 45px; height: 45px; object-fit: contain; mix-blend-mode: multiply; border-radius: 10px; padding: 2px; }
@@ -66,12 +64,25 @@
     .bank-details h3 { margin: 2px 0; color: #1E3A8A; font-size: 18px; letter-spacing: 1px; }
     .bank-details p { margin: 0; font-size: 13px; color: #555; }
     
-    /* สไตล์กร่องเลขออเดอร์แบบเดียวกับบัญชี */
-    .order-card { background: linear-gradient(135deg, #E3F2FD 0%, var(--pastel-blue) 100%); padding: 12px 15px; border-radius: var(--border-radius-md); display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); border: 2px solid var(--pastel-blue-dark); }
-    
     .btn-copy { background: white; color: var(--pastel-blue-dark); border: 2px solid white; padding: 8px 12px; border-radius: 12px; font-family: 'Kanit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
     .btn-copy:hover { background: var(--pastel-blue-dark); color: white; }
     
+    /* สไตล์ปุ่มคัดลอกแบบแนบข้างในช่องเลขออเดอร์ */
+    .btn-copy-inline { 
+      background-color: var(--pastel-blue-dark); 
+      color: white; 
+      border: none; 
+      padding: 0 15px; 
+      border-radius: 12px; 
+      font-family: 'Kanit', sans-serif; 
+      font-size: 14px; 
+      font-weight: 600; 
+      cursor: pointer; 
+      transition: 0.2s; 
+      white-space: nowrap;
+    }
+    .btn-copy-inline:hover { background-color: #5BA4E5; }
+
     .payment-form { display: flex; flex-direction: column; gap: 12px; width: 100%; }
     .form-group { display: flex; flex-direction: column; gap: 5px; width: 100%; }
     .form-group.row { display: flex; flex-direction: row; gap: 8px; width: 100%; justify-content: space-between; }
@@ -168,14 +179,12 @@
 
       <form class="payment-form" id="payForm" onsubmit="handleFormSubmit(event)">
         
-        <!-- เลขออเดอร์อยู่ในกรอบสีฟ้า มีปุ่มคัดลอกข้างใน และมีโน้ตด้านล่าง -->
+        <!-- เลขออเดอร์พร้อมปุ่มคัดลอกบรรทัดเดียวกัน และโน้ตด้านล่าง -->
         <div class="form-group">
           <label>เลขออเดอร์</label>
-          <div class="order-card">
-            <div class="bank-details" style="width: 100%;">
-              <h3 id="orderIdDisplay" style="color: #1E3A8A; font-size: 18px;">XH000000</h3>
-            </div>
-            <button type="button" class="btn-copy" onclick="copyFieldOrderId()">คัดลอก</button>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="orderIdField" readonly style="flex: 1;">
+            <button type="button" class="btn-copy-inline" onclick="copyFieldOrderId()">คัดลอก</button>
           </div>
           <p style="font-size: 12px; color: #E53E3E; padding-left: 5px; margin-top: 2px;">📌 รบกวนจำเลขออเดอร์ เพื่อนำไปเช็คสถานะการจัดส่งค่ะ</p>
         </div>
@@ -257,11 +266,6 @@
     return "XH" + randomNum;
   }
 
-  function updateOrderId() {
-    const newId = generateOrderNumber();
-    document.getElementById('orderIdDisplay').innerText = newId;
-  }
-
   function openTab(tabId, btnElement) {
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -269,9 +273,9 @@
     btnElement.classList.add('active');
 
     if(tabId === 'paymentTab') {
-      const displayElem = document.getElementById('orderIdDisplay');
-      if(displayElem.innerText === "XH000000" || displayElem.innerText === "") {
-        updateOrderId();
+      const orderField = document.getElementById('orderIdField');
+      if(orderField.value === "") {
+        orderField.value = generateOrderNumber();
       }
     }
   }
@@ -292,7 +296,7 @@
   }
 
   function copyFieldOrderId() {
-    const val = document.getElementById('orderIdDisplay').innerText;
+    const val = document.getElementById('orderIdField').value;
     navigator.clipboard.writeText(val).then(() => {
       showToast("📋 คัดลอกเลขออเดอร์ " + val + " สำเร็จ!");
     });
@@ -311,7 +315,7 @@
     btn.innerText = "กำลังส่งข้อมูล... ⏳";
     btn.disabled = true;
 
-    const currentOrderId = document.getElementById('orderIdDisplay').innerText;
+    const currentOrderId = document.getElementById('orderIdField').value;
 
     const params = new URLSearchParams({
       action: 'save',
@@ -352,7 +356,7 @@
   function resetFormToNewOrder() {
     document.getElementById('successCard').style.display = 'none';
     document.getElementById('paymentFormContainer').style.display = 'block';
-    updateOrderId();
+    document.getElementById('orderIdField').value = generateOrderNumber();
   }
 
   function searchStatus() {
