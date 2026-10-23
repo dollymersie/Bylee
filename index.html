@@ -113,6 +113,14 @@
     .form-group { display: flex; flex-direction: column; gap: 5px; width: 100%; }
     .form-group.row { display: flex; flex-direction: row; gap: 8px; width: 100%; justify-content: space-between; }
     
+    /* ล็อกขนาดช่องวันที่และเวลาให้เหลือ 95% และชิดซ้าย */
+    .form-group.date-time-95 input {
+      width: 95% !important;
+      max-width: 95% !important;
+      margin-left: 0;
+      margin-right: auto;
+    }
+
     label { font-size: 13px; font-weight: 500; color: #5BA4E5; padding-left: 5px; }
     
     input, textarea { 
@@ -208,7 +216,7 @@
 
       <form class="payment-form" id="payForm" onsubmit="handleFormSubmit(event)">
         
-        <!-- เลขออเดอร์พร้อมปุ่มคัดลอกพื้นหลังขาว ตัวอักษรสีฟ้า -->
+        <!-- เลขออเดอร์พร้อมปุ่มคัดลอก -->
         <div class="form-group">
           <label data-key="labelOrderId">เลขออเดอร์</label>
           <div class="order-input-wrapper">
@@ -250,14 +258,14 @@
           <input type="tel" id="phoneField" required placeholder="08X-XXX-XXXX">
         </div>
 
-        <!-- วันที่โอน -->
-        <div class="form-group date-time-left">
+        <!-- วันที่โอน (ปรับเหลือ 95%) -->
+        <div class="form-group date-time-95">
           <label data-key="labelDate">วันที่โอน</label>
           <input type="date" id="dateField" required>
         </div>
 
-        <!-- เวลาที่โอน -->
-        <div class="form-group date-time-left">
+        <!-- เวลาที่โอน (ปรับเหลือ 95%) -->
+        <div class="form-group date-time-95">
           <label data-key="labelTime">เวลาที่โอน</label>
           <input type="time" id="timeField" required>
         </div>
