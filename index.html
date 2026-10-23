@@ -11,6 +11,8 @@
       --pastel-blue-dark: #89CFF0;
       --pastel-yellow: #FFF9C4;
       --pastel-yellow-dark: #FFF59D;
+      --pastel-pink: #FFD1DC;
+      --pastel-pink-dark: #FFB6C1;
       --bg-color: #F0F8FF;
       --text-color: #4A4A4A;
       --text-light: #718096;
@@ -141,6 +143,36 @@
     
     .btn-submit { background-color: var(--pastel-blue-dark); color: white; border: none; padding: 15px; border-radius: 25px; font-family: 'Kanit', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 12px rgba(137, 207, 240, 0.4); transition: transform 0.2s; width: 100%; }
     .btn-submit:hover { transform: translateY(-2px); }
+    
+    /* สไตล์ปุ่มในหน้าสำเร็จ (ตัวอักษรใหญ่ขึ้น และปุ่มเช็คสถานะสีชมพู) */
+    .btn-success-action {
+      width: 100%; 
+      padding: 14px; 
+      border-radius: 14px; 
+      font-family: 'Kanit', sans-serif; 
+      font-size: 17px; 
+      font-weight: 600; 
+      cursor: pointer; 
+      border: none;
+      transition: 0.2s;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    }
+    .btn-check-status {
+      background-color: #FFB6C1; 
+      color: #7A3E48; 
+      margin-bottom: 10px;
+    }
+    .btn-check-status:hover {
+      background-color: #FFA6B5;
+    }
+    .btn-new-order {
+      background-color: var(--pastel-yellow-dark); 
+      color: #9D8A00;
+    }
+    .btn-new-order:hover {
+      background-color: var(--pastel-yellow);
+    }
+
     .search-container { display: flex; gap: 10px; margin-bottom: 20px; width: 100%; }
     .search-container input { flex: 1; margin: 0; }
     .btn-search { background-color: var(--pastel-yellow-dark); color: #9D8A00; border: none; padding: 0 20px; border-radius: 12px; font-family: 'Kanit', sans-serif; font-weight: 600; cursor: pointer; }
@@ -159,7 +191,7 @@
 <body>
 
 <div class="app-container">
-  <!-- ส่วนหัวเว็บ: แท็บเมนู และปุ่มเปลี่ยนภาษาลูกโลก -->
+  <!-- ส่วนหัวเว็บ: แท็บเมนู และปุ่มเปลี่ยนภาษาโลโก้ลูกโลก -->
   <div class="top-header">
     <div class="nav-tabs">
       <button class="nav-btn active" onclick="openTab('homeTab', this)" data-key="tabHome">🏠 หน้าหลัก</button>
@@ -193,8 +225,10 @@
         <span id="confirmedOrderId">XH000000</span>
         <button class="btn-copy" onclick="copySpecificOrderId()" data-key="btnCopyNum">คัดลอกเลข</button>
       </div>
-      <button class="btn-search" style="width: 100%; padding: 12px; margin-bottom: 8px; background-color: var(--pastel-blue-dark); color: white;" onclick="goToStatusCheck()" data-key="btnCheckStatusNow">เช็คสถานะสินค้า 📦🔍</button>
-      <button class="btn-search" style="width: 100%; padding: 10px;" onclick="resetFormToNewOrder()" data-key="btnNewOrder">แจ้งโอนออเดอร์ใหม่ 🔄</button>
+      <!-- ปุ่มเช็คสถานะสินค้า (สีชมพู ตัวอักษรใหญ่) -->
+      <button class="btn-success-action btn-check-status" onclick="goToStatusCheck()" data-key="btnCheckStatusNow">เช็คสถานะสินค้า 📦🔍</button>
+      <!-- ปุ่มแจ้งโอนออเดอร์ใหม่ (ตัวอักษรใหญ่) -->
+      <button class="btn-success-action btn-new-order" onclick="resetFormToNewOrder()" data-key="btnNewOrder">แจ้งโอนออเดอร์ใหม่ 🔄</button>
     </div>
 
     <div id="paymentFormContainer">
