@@ -46,7 +46,6 @@
       flex-direction: column;
     }
     
-    /* ส่วนหัว: แถบเมนู และ ปุ่มเปลี่ยนภาษาโลโก้ลูกโลก */
     .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .nav-tabs { display: flex; gap: 8px; background: var(--bg-color); padding: 6px; border-radius: 30px; flex: 1; }
     .nav-btn { flex: 1; border: none; background: transparent; padding: 8px 4px; border-radius: 20px; font-family: 'Kanit', sans-serif; font-weight: 500; font-size: 13px; color: var(--text-light); cursor: pointer; transition: all 0.3s ease; text-align: center; }
@@ -144,7 +143,6 @@
     .btn-submit { background-color: var(--pastel-blue-dark); color: white; border: none; padding: 15px; border-radius: 25px; font-family: 'Kanit', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 12px rgba(137, 207, 240, 0.4); transition: transform 0.2s; width: 100%; }
     .btn-submit:hover { transform: translateY(-2px); }
     
-    /* สไตล์ปุ่มในหน้าสำเร็จ (ตัวอักษรใหญ่ขึ้น และปุ่มเช็คสถานะสีชมพู) */
     .btn-success-action {
       width: 100%; 
       padding: 14px; 
@@ -176,8 +174,13 @@
     .search-container { display: flex; gap: 10px; margin-bottom: 20px; width: 100%; }
     .search-container input { flex: 1; margin: 0; }
     .btn-search { background-color: var(--pastel-yellow-dark); color: #9D8A00; border: none; padding: 0 20px; border-radius: 12px; font-family: 'Kanit', sans-serif; font-weight: 600; cursor: pointer; }
+    
     .result-box { background-color: var(--bg-color); border: 2px solid var(--pastel-blue); border-radius: var(--border-radius-md); padding: 20px; text-align: left; display: none; width: 100%; word-break: break-word; }
-    .result-box h3 { margin-bottom: 10px; }
+    .status-row { margin-bottom: 8px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(137, 207, 240, 0.5); padding-bottom: 6px; }
+    .status-row:last-child { border-bottom: none; }
+    .status-label { font-weight: 600; color: #4A5568; }
+    .status-value { color: #1E3A8A; font-weight: 500; }
+    .tracking-badge { background: white; padding: 4px 10px; border-radius: 8px; border: 1px solid var(--pastel-blue-dark); display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: #2C5282; }
     
     .success-card { background-color: #E6FFFA; border: 2px solid #38A169; border-radius: var(--border-radius-md); padding: 20px; text-align: center; margin-bottom: 20px; display: none; }
     .success-card h3 { color: #2F855A; margin-bottom: 8px; font-size: 18px; }
@@ -191,7 +194,6 @@
 <body>
 
 <div class="app-container">
-  <!-- ส่วนหัวเว็บ: แท็บเมนู และปุ่มเปลี่ยนภาษาโลโก้ลูกโลก -->
   <div class="top-header">
     <div class="nav-tabs">
       <button class="nav-btn active" onclick="openTab('homeTab', this)" data-key="tabHome">🏠 หน้าหลัก</button>
@@ -201,7 +203,6 @@
     <button class="lang-toggle-btn" onclick="toggleLanguage()">🌐 <span id="langLabel">TH / EN</span></button>
   </div>
 
-  <!-- หน้าแรก -->
   <div id="homeTab" class="tab-content active home-layout">
     <h2 class="page-title">✨ BYLEE ✨</h2>
     <img src="https://t1.blockdit.com/photos/2020/11/5fb952383d4b9b0cc0fd7d2e_800x0xcover_3aaaqsST.jpg" alt="Shin-chan" class="hero-image">
@@ -213,11 +214,9 @@
     </div>
   </div>
 
-  <!-- หน้าชำระเงิน -->
   <div id="paymentTab" class="tab-content">
     <h2 class="page-title" data-key="paymentTitle">💸 Payment 💸</h2>
     
-    <!-- กล่องแสดงเลขออเดอร์หลังส่งสำเร็จ -->
     <div id="successCard" class="success-card">
       <h3 data-key="successHead">🎉 แจ้งชำระเงินสำเร็จ!</h3>
       <p style="font-size: 13px; color: #4A5568;" data-key="successDesc">รบกวนจำเลขออเดอร์ เพื่อนำไปเช็คสถานะการจัดส่งค่ะ</p>
@@ -225,9 +224,7 @@
         <span id="confirmedOrderId">XH000000</span>
         <button class="btn-copy" onclick="copySpecificOrderId()" data-key="btnCopyNum">คัดลอกเลข</button>
       </div>
-      <!-- ปุ่มเช็คสถานะสินค้า (สีชมพู ตัวอักษรใหญ่) -->
       <button class="btn-success-action btn-check-status" onclick="goToStatusCheck()" data-key="btnCheckStatusNow">เช็คสถานะสินค้า 📦🔍</button>
-      <!-- ปุ่มแจ้งโอนออเดอร์ใหม่ (ตัวอักษรใหญ่) -->
       <button class="btn-success-action btn-new-order" onclick="resetFormToNewOrder()" data-key="btnNewOrder">แจ้งโอนออเดอร์ใหม่ 🔄</button>
     </div>
 
@@ -250,7 +247,6 @@
 
       <form class="payment-form" id="payForm" onsubmit="handleFormSubmit(event)">
         
-        <!-- เลขออเดอร์พร้อมปุ่มคัดลอก -->
         <div class="form-group">
           <label data-key="labelOrderId">เลขออเดอร์</label>
           <div class="order-input-wrapper">
@@ -260,7 +256,6 @@
           <p style="font-size: 12px; color: #E53E3E; padding-left: 5px; margin-top: 2px;" data-key="orderNote">📌 รบกวนจำเลขออเดอร์ เพื่อนำไปเช็คสถานะการจัดส่งค่ะ</p>
         </div>
 
-        <!-- รายการสินค้าและจำนวน -->
         <div class="form-group row" style="justify-content: space-between; margin-top: 5px;">
           <div style="flex: 2.8; min-width: 0;">
             <label data-key="labelItem">รายการสินค้า 🛍️</label>
@@ -287,25 +282,21 @@
           <input type="text" id="contactField" required placeholder="เช่น @custhesun">
         </div>
 
-        <!-- เบอร์โทรศัพท์ (บังคับใส่เฉพาะตัวเลข, สูงสุด 10 หลัก) -->
         <div class="form-group">
           <label data-key="labelPhone">เบอร์โทรศัพท์</label>
           <input type="tel" id="phoneField" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required placeholder="08XXXXXXXX">
         </div>
 
-        <!-- จำนวนเงินที่โอน -->
         <div class="form-group">
           <label data-key="labelAmount">จำนวนเงินที่โอน (บาท) 💵</label>
           <input type="number" step="0.01" id="amountField" required data-placeholder="amountPlaceholder" placeholder="เช่น 350.00">
         </div>
 
-        <!-- วันที่โอน -->
         <div class="form-group date-time-95">
           <label data-key="labelDate">วันที่โอน</label>
           <input type="date" id="dateField" required>
         </div>
 
-        <!-- เวลาที่โอน -->
         <div class="form-group date-time-95">
           <label data-key="labelTime">เวลาที่โอน</label>
           <input type="time" id="timeField" required>
@@ -321,7 +312,6 @@
     </div>
   </div>
 
-  <!-- หน้าเช็คสถานะ -->
   <div id="statusTab" class="tab-content">
     <h2 class="page-title" data-key="statusTitle">🚚 เช็คสถานะ 🚚</h2>
     <label style="margin-bottom: 5px; display:block;" data-key="labelCheckOrder">กรอกเลขออเดอร์ของคุณ</label>
@@ -337,7 +327,7 @@
 <div id="toastMessage" class="toast">ข้อความ</div>
 
 <script>
-  const API_URL = "https://script.google.com/macros/s/AKfycbxd3o-7Jv3XvKhYJ83ulEO7p_3brqXfXveGaQWHAPU-lBJHW3mIR1rY0XYFW-2vtWfn/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbweHBka1qNJ5UuXFnFDHh69QVk6N8h61KWNVEzz6ChTGf3Vl9CLxpmRnzrPlNAQVnzYIw/exec";
 
   const translations = {
     th: {
@@ -379,223 +369,3 @@
       toastCopyOrder: "📋 คัดลอกเลขออเดอร์ ",
       toastSuccess: "🎉 แจ้งชำระเงินเรียบร้อยแล้ว!",
       toastError: "❌ เกิดข้อผิดพลาด กรุณาลองใหม่",
-      toastConnectError: "❌ เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ",
-      toastEmptyOrder: "⚠️ กรุณากรอกเลขออเดอร์ก่อนนะคะ",
-      statusNotFound: "❌ ไม่พบออเดอร์ ",
-      statusNotFoundDesc: " ในระบบ รบกวนตรวจสอบเลขอีกครั้งนะคะ 🥺",
-      statusFoundText: "📌 สถานะ: ",
-      statusThanks: "ขอบคุณที่อุดหนุนร้าน BYLEE นะคะ 💛"
-    },
-    en: {
-      tabHome: "🏠 Home",
-      tabPayment: "💸 Payment",
-      tabStatus: "🚚 Status",
-      shippingInfo: "Shipping every Saturday - Sunday 📦",
-      paymentTitle: "💸 Payment 💸",
-      successHead: "🎉 Payment Submitted!",
-      successDesc: "Please save your Order ID to check your shipping status.",
-      btnCopyNum: "Copy ID",
-      btnCheckStatusNow: "Check Status 📦🔍",
-      btnNewOrder: "New Order 🔄",
-      warningText: "⚠️ Wrong transfer, no refund! <br>Please double-check account name and number before transferring 💛",
-      bankName: "BBL (Bangkok Bank)",
-      btnCopy: "Copy",
-      labelOrderId: "Order ID",
-      orderNote: "📌 Please remember your Order ID to check delivery status.",
-      labelItem: "Item(s) 🛍️",
-      itemPlaceholder: "Enter item name/design",
-      labelQty: "Quantity 🔢",
-      labelName: "Full Name",
-      namePlaceholder: "Recipient Name",
-      labelAddress: "Shipping Address",
-      addressPlaceholder: "House no., District, Province, Postal Code",
-      labelContact: "Contact (X, Line)",
-      labelPhone: "Phone Number",
-      labelAmount: "Transfer Amount (THB) 💵",
-      amountPlaceholder: "e.g., 350.00",
-      labelDate: "Transfer Date",
-      labelTime: "Transfer Time",
-      labelSlip: "Attach Slip",
-      btnSubmit: "Confirm Payment ✨",
-      statusTitle: "🚚 Check Status 🚚",
-      labelCheckOrder: "Enter your Order ID",
-      searchPlaceholder: "e.g., XH123456",
-      btnSearch: "Search 🔍",
-      toastCopyAcc: "📋 Copied account number 907-0-402749 successfully!",
-      toastCopyOrder: "📋 Copied Order ID ",
-      toastSuccess: "🎉 Payment submitted successfully!",
-      toastError: "❌ An error occurred, please try again",
-      toastConnectError: "❌ Server connection failed",
-      toastEmptyOrder: "⚠️ Please enter your Order ID first",
-      statusNotFound: "❌ Order ",
-      statusNotFoundDesc: " not found in system. Please check your ID again 🥺",
-      statusFoundText: "📌 Status: ",
-      statusThanks: "Thank you for supporting BYLEE Store 💛"
-    }
-  };
-
-  let currentLang = 'th';
-
-  function toggleLanguage() {
-    currentLang = currentLang === 'th' ? 'en' : 'th';
-    document.getElementById('langLabel').innerText = currentLang === 'th' ? 'TH / EN' : 'EN / TH';
-    updateTexts();
-  }
-
-  function updateTexts() {
-    const t = translations[currentLang];
-    document.querySelectorAll('[data-key]').forEach(el => {
-      const key = el.getAttribute('data-key');
-      if (t[key]) {
-        el.innerHTML = t[key];
-      }
-    });
-    document.querySelectorAll('[data-placeholder]').forEach(el => {
-      const key = el.getAttribute('data-placeholder');
-      if (t[key]) {
-        el.placeholder = t[key];
-      }
-    });
-  }
-
-  function generateOrderNumber() {
-    const randomNum = Math.floor(100000 + Math.random() * 900000);
-    return "XH" + randomNum;
-  }
-
-  function openTab(tabId, btnElement) {
-    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-    btnElement.classList.add('active');
-
-    if(tabId === 'paymentTab') {
-      const orderField = document.getElementById('orderIdField');
-      if(orderField.value === "") {
-        orderField.value = generateOrderNumber();
-      }
-    }
-  }
-
-  function goToStatusCheck() {
-    const orderId = document.getElementById('confirmedOrderId').innerText;
-    document.getElementById('searchInput').value = orderId;
-    const statusTabBtn = document.querySelectorAll('.nav-btn')[2];
-    openTab('statusTab', statusTabBtn);
-    searchStatus();
-  }
-
-  let toastTimeout;
-  function showToast(msg) {
-    const toast = document.getElementById("toastMessage");
-    toast.innerText = msg;
-    toast.classList.add("show");
-    clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(() => { toast.classList.remove("show"); }, 3000);
-  }
-
-  function copyAccNumber() {
-    navigator.clipboard.writeText("9070402749").then(() => {
-      showToast(translations[currentLang].toastCopyAcc);
-    });
-  }
-
-  function copyFieldOrderId() {
-    const val = document.getElementById('orderIdField').value;
-    navigator.clipboard.writeText(val).then(() => {
-      showToast(translations[currentLang].toastCopyOrder + val + "!");
-    });
-  }
-
-  function copySpecificOrderId() {
-    const val = document.getElementById('confirmedOrderId').innerText;
-    navigator.clipboard.writeText(val).then(() => {
-      showToast(translations[currentLang].toastCopyOrder + val + "!");
-    });
-  }
-
-  function handleFormSubmit(event) {
-    event.preventDefault();
-    const t = translations[currentLang];
-    const btn = document.getElementById("submitBtn");
-    btn.innerText = currentLang === 'th' ? "กำลังส่งข้อมูล... ⏳" : "Sending... ⏳";
-    btn.disabled = true;
-
-    const currentOrderId = document.getElementById('orderIdField').value;
-
-    const params = new URLSearchParams({
-      action: 'save',
-      orderId: currentOrderId,
-      item: document.getElementById('itemField').value,
-      quantity: document.getElementById('quantityField').value,
-      name: document.getElementById('nameField').value,
-      address: document.getElementById('addressField').value,
-      contact: document.getElementById('contactField').value,
-      phone: document.getElementById('phoneField').value,
-      amount: document.getElementById('amountField').value,
-      date: document.getElementById('dateField').value,
-      time: document.getElementById('timeField').value
-    });
-
-    fetch(API_URL + '?' + params.toString())
-      .then(res => res.json())
-      .then(data => {
-        if(data.success) {
-          showToast(t.toastSuccess);
-          document.getElementById('payForm').reset();
-          document.getElementById('paymentFormContainer').style.display = 'none';
-          document.getElementById('confirmedOrderId').innerText = currentOrderId;
-          document.getElementById('successCard').style.display = 'block';
-        } else {
-          showToast(t.toastError);
-        }
-        btn.innerText = t.btnSubmit;
-        btn.disabled = false;
-      })
-      .catch(() => {
-        showToast(t.toastConnectError);
-        btn.innerText = t.btnSubmit;
-        btn.disabled = false;
-      });
-  }
-
-  function resetFormToNewOrder() {
-    document.getElementById('successCard').style.display = 'none';
-    document.getElementById('paymentFormContainer').style.display = 'block';
-    document.getElementById('orderIdField').value = generateOrderNumber();
-  }
-
-  function searchStatus() {
-    const t = translations[currentLang];
-    const input = document.getElementById("searchInput").value.trim();
-    const resultBox = document.getElementById("statusResult");
-    
-    if(input === "") {
-      showToast(t.toastEmptyOrder);
-      return;
-    }
-    
-    resultBox.style.display = "block";
-    resultBox.innerHTML = currentLang === 'th' ? "กำลังค้นหา... ⏳" : "Searching... ⏳";
-
-    fetch(API_URL + '?action=check&orderId=' + input)
-      .then(res => res.json())
-      .then(data => {
-        if(data.found) {
-          resultBox.innerHTML = `
-            <h3 style="color: #38A169;">${t.statusFoundText}${data.status}</h3>
-            <p><b>${t.labelOrderId}:</b> ${input.toUpperCase()}</p>
-            <p style="margin-top: 10px; color: #718096; font-size: 14px;">${t.statusThanks}</p>
-          `;
-        } else {
-          resultBox.innerHTML = `<span style='color: #E53E3E;'>${t.statusNotFound}${input.toUpperCase()}${t.statusNotFoundDesc}</span>`;
-        }
-      })
-      .catch(() => {
-        resultBox.innerHTML = `<span style='color: #E53E3E;'>${t.toastConnectError}</span>`;
-      });
-  }
-</script>
-
-</body>
-</html>
