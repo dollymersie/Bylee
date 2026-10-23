@@ -67,8 +67,10 @@
     .btn-copy:hover { background: var(--pastel-blue-dark); color: white; }
     .payment-form { display: flex; flex-direction: column; gap: 12px; width: 100%; }
     .form-group { display: flex; flex-direction: column; gap: 5px; width: 100%; }
-    .form-group.row { display: flex; flex-direction: row; gap: 8px; width: 100%; justify-content: space-between; }
-    .form-group.row > div { display: flex; flex-direction: column; gap: 5px; min-width: 0; flex: 0 0 48%; }
+    .form-group.row { display: flex; flex-direction: row; gap: 8px; width: 100%; justify-content: center; }
+    
+    /* บังคับช่องวันที่และเวลาให้กว้างประมาณ 30-35% และจัดให้อยู่ตรงกลาง */
+    .form-group.row > div { display: flex; flex-direction: column; gap: 5px; min-width: 0; flex: 0 0 38%; }
     
     label { font-size: 13px; font-weight: 500; color: #5BA4E5; padding-left: 5px; }
     
@@ -147,7 +149,7 @@
       </div>
 
       <!-- รายการสินค้าและจำนวน -->
-      <div class="form-group row">
+      <div class="form-group row" style="justify-content: space-between;">
         <div style="flex: 2.8; min-width: 0;">
           <label>รายการสินค้า 🛍️</label>
           <input type="text" id="itemField" required placeholder="ระบุชื่อสินค้า/ลายที่สั่ง">
@@ -178,7 +180,7 @@
         <input type="tel" id="phoneField" required placeholder="08X-XXX-XXXX">
       </div>
 
-      <!-- วันที่และเวลาโอน (บรรทัดเดียวกัน ช่องละประมาณ 48%) -->
+      <!-- วันที่และเวลาโอน (ลดเหลือประมาณ 38% อยู่บรรทัดเดียวกัน) -->
       <div class="form-group row">
         <div>
           <label>วันที่โอน</label>
