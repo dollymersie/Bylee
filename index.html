@@ -134,7 +134,7 @@
     <!-- กล่องแสดงเลขออเดอร์หลังส่งสำเร็จ -->
     <div id="successCard" class="success-card">
       <h3>🎉 แจ้งชำระเงินสำเร็จ!</h3>
-      <p style="font-size: 13px; color: #4A5568;">กรุณาคัดลอกเลขออเดอร์นี้ไว้สำหรับตรวจสอบสถานะ</p>
+      <p style="font-size: 13px; color: #4A5568;">รบกวนจำเลขออเดอร์ เพื่อนำไปเช็คสถานะการจัดส่งค่ะ</p>
       <div class="success-order-box">
         <span id="confirmedOrderId">XH000000</span>
         <button class="btn-copy" onclick="copySpecificOrderId()">คัดลอกเลข</button>
@@ -161,17 +161,22 @@
 
       <form class="payment-form" id="payForm" onsubmit="handleFormSubmit(event)">
         
-        <!-- เลขออเดอร์พร้อมปุ่มคัดลอก -->
+        <!-- เลขออเดอร์สไตล์การ์ดธนาคาร พร้อมปุ่มคัดลอกในตัว และโน้ตด้านล่าง -->
         <div class="form-group">
           <label>เลขออเดอร์ (อัตโนมัติ)</label>
-          <div style="display: flex; gap: 8px;">
-            <input type="text" id="orderIdField" readonly style="flex: 1;">
+          <div class="bank-card" style="margin-bottom: 2px; background: linear-gradient(135deg, #F0F8FF 0%, var(--pastel-blue) 100%);">
+            <div class="bank-info-left" style="width: 100%;">
+              <div class="bank-details" style="width: 100%;">
+                <h3 id="orderIdDisplay" style="color: #1E3A8A; font-size: 20px;">XH000000</h3>
+              </div>
+            </div>
             <button type="button" class="btn-copy" onclick="copyFieldOrderId()">คัดลอก</button>
           </div>
+          <p style="font-size: 12px; color: #E53E3E; padding-left: 5px; margin-top: 2px;">📌 รบกวนจำเลขออเดอร์ เพื่อนำไปเช็คสถานะการจัดส่งค่ะ</p>
         </div>
 
         <!-- รายการสินค้าและจำนวน -->
-        <div class="form-group row" style="justify-content: space-between;">
+        <div class="form-group row" style="justify-content: space-between; margin-top: 5px;">
           <div style="flex: 2.8; min-width: 0;">
             <label>รายการสินค้า 🛍️</label>
             <input type="text" id="itemField" required placeholder="ระบุชื่อสินค้า/ลายที่สั่ง">
@@ -247,6 +252,11 @@
     return "XH" + randomNum;
   }
 
+  function updateOrderId() {
+    const newId = generateOrderNumber();
+    document.getElementById('orderIdDisplay').innerText = newId;
+  }
+
   function openTab(tabId, btnElement) {
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -254,9 +264,9 @@
     btnElement.classList.add('active');
 
     if(tabId === 'paymentTab') {
-      const orderField = document.getElementById('orderIdField');
-      if(orderField.value === "") {
-        orderField.value = generateOrderNumber();
+      const displayElem = document.getElementById('orderIdDisplay');
+      if(displayElem.innerText === "XH000000" || displayElem.innerText === "") {
+        updateOrderId();
       }
     }
   }
@@ -277,7 +287,7 @@
   }
 
   function copyFieldOrderId() {
-    const val = document.getElementById('orderIdField').value;
+    const val = document.getElementById('orderIdDisplay').innerText;
     navigator.clipboard.writeText(val).then(() => {
       showToast("📋 คัดลอกเลขออเดอร์ " + val + " สำเร็จ!");
     });
@@ -296,7 +306,7 @@
     btn.innerText = "กำลังส่งข้อมูล... ⏳";
     btn.disabled = true;
 
-    const currentOrderId = document.getElementById('orderIdField').value;
+    const currentOrderId = document.getElementById('orderIdDisplay').innerText;
 
     const params = new URLSearchParams({
       action: 'save',
@@ -317,7 +327,6 @@
         if(data.success) {
           showToast("🎉 แจ้งชำระเงินเรียบร้อยแล้ว!");
           
-          // ซ่อนฟอร์ม แล้วแสดงการ์ดสรุปเลขออเดอร์สำเร็จ
           document.getElementById('payForm').reset();
           document.getElementById('paymentFormContainer').style.display = 'none';
           document.getElementById('confirmedOrderId').innerText = currentOrderId;
@@ -338,7 +347,7 @@
   function resetFormToNewOrder() {
     document.getElementById('successCard').style.display = 'none';
     document.getElementById('paymentFormContainer').style.display = 'block';
-    document.getElementById('orderIdField').value = generateOrderNumber();
+    updateOrderId();
   }
 
   function searchStatus() {
