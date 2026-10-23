@@ -70,16 +70,16 @@
     .form-group.row { display: flex; flex-direction: row; gap: 8px; width: 100%; justify-content: space-between; }
     .form-group.row > div { display: flex; flex-direction: column; gap: 5px; min-width: 0; flex: 1; }
     
-    /* ปรับขนาด 90% และจัดชิดขวาเฉพาะช่องวันที่และเวลา */
-    .form-group.date-time-right input {
+    /* ปรับขนาด 90% และจัดชิดซ้ายเฉพาะช่องวันที่และเวลา */
+    .form-group.date-time-left input {
       width: 90% !important;
       max-width: 90% !important;
-      margin-left: auto;
-      margin-right: 0;
+      margin-left: 0;
+      margin-right: auto;
     }
-    .form-group.date-time-right label {
-      text-align: right;
-      padding-right: 5px;
+    .form-group.date-time-left label {
+      text-align: left;
+      padding-left: 5px;
     }
 
     label { font-size: 13px; font-weight: 500; color: #5BA4E5; padding-left: 5px; }
@@ -190,14 +190,14 @@
         <input type="tel" id="phoneField" required placeholder="08X-XXX-XXXX">
       </div>
 
-      <!-- วันที่โอน (90% ชิดขวา) -->
-      <div class="form-group date-time-right">
+      <!-- วันที่โอน (90% ชิดซ้าย) -->
+      <div class="form-group date-time-left">
         <label>วันที่โอน</label>
         <input type="date" id="dateField" required>
       </div>
 
-      <!-- เวลาที่โอน (90% ชิดขวา) -->
-      <div class="form-group date-time-right">
+      <!-- เวลาที่โอน (90% ชิดซ้าย) -->
+      <div class="form-group date-time-left">
         <label>เวลาที่โอน</label>
         <input type="time" id="timeField" required>
       </div>
