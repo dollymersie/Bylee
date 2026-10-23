@@ -304,7 +304,7 @@
 
         <div class="form-group">
           <label data-key="labelSlip">แนบรูปสลิป</label>
-          <input type="file" accept="image/*" required>
+          <input type="file" id="slipField" accept="image/*" required>
         </div>
 
         <button type="submit" class="btn-submit" id="submitBtn" data-key="btnSubmit">ยืนยันการแจ้งโอน ✨</button>
@@ -327,8 +327,8 @@
 <div id="toastMessage" class="toast">ข้อความ</div>
 
 <script>
-  // ลิงก์ Web App ใหม่ล่าสุด ที่ล็อคเป้าหมาย Google Sheet ไว้เรียบร้อยแล้ว
-  const API_URL = "https://script.google.com/macros/s/AKfycbxWrLbCMnJLjMkNIcClrRVfrSi4m9skIW5ySxqCxq-MwuuyNgnKTKAzJQgiX1t39j7Zcg/exec";
+  // ลิงก์ Web App ล่าสุดที่รองรับการอัปโหลดรูปสลิปเรียบร้อยแล้ว
+  const API_URL = "https://script.google.com/macros/s/AKfycbzlAnrYvOJqUj1-OPRtJxWzwWa4B5yfTSV7WJ4ronLgCDHJ3dTdvETgS4FPMB4qJL5new/exec";
 
   const translations = {
     th: {
@@ -513,26 +513,47 @@
     event.preventDefault();
     const t = translations[currentLang];
     const btn = document.getElementById("submitBtn");
-    btn.innerText = currentLang === 'th' ? "กำลังส่งข้อมูล... ⏳" : "Sending... ⏳";
+    btn.innerText = currentLang === 'th' ? "กำลังอัปโหลดสลิป... ⏳" : "Uploading... ⏳";
     btn.disabled = true;
 
     const currentOrderId = document.getElementById('orderIdField').value;
+    const fileInput = document.getElementById('slipField');
+    const file = fileInput.files[0];
 
-    const params = new URLSearchParams({
-      action: 'save',
-      orderId: currentOrderId,
-      item: document.getElementById('itemField').value,
-      quantity: document.getElementById('quantityField').value,
-      name: document.getElementById('nameField').value,
-      address: document.getElementById('addressField').value,
-      contact: document.getElementById('contactField').value,
-      phone: document.getElementById('phoneField').value,
-      amount: document.getElementById('amountField').value,
-      date: document.getElementById('dateField').value,
-      time: document.getElementById('timeField').value
-    });
+    if (!file) {
+      showToast("⚠️ กรุณาแนบรูปสลิปด้วยนะคะ");
+      btn.innerText = t.btnSubmit;
+      btn.disabled = false;
+      return;
+    }
 
-    fetch(API_URL + '?' + params.toString())
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const base64Data = e.target.result;
+
+      const params = new URLSearchParams({
+        action: 'save',
+        orderId: currentOrderId,
+        item: document.getElementById('itemField').value,
+        quantity: document.getElementById('quantityField').value,
+        name: document.getElementById('nameField').value,
+        address: document.getElementById('addressField').value,
+        contact: document.getElementById('contactField').value,
+        phone: document.getElementById('phoneField').value,
+        amount: document.getElementById('amountField').value,
+        date: document.getElementById('dateField').value,
+        time: document.getElementById('timeField').value,
+        slip: base64Data,
+        slipName: file.name
+      });
+
+      fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: params.toString()
+      })
       .then(res => res.json())
       .then(data => {
         if(data.success) {
@@ -552,6 +573,8 @@
         btn.innerText = t.btnSubmit;
         btn.disabled = false;
       });
+    };
+    reader.readAsDataURL(file);
   }
 
   function resetFormToNewOrder() {
