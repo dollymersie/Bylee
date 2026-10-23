@@ -67,20 +67,9 @@
     .btn-copy:hover { background: var(--pastel-blue-dark); color: white; }
     .payment-form { display: flex; flex-direction: column; gap: 12px; width: 100%; }
     .form-group { display: flex; flex-direction: column; gap: 5px; width: 100%; }
-    .form-group.row { display: flex; flex-direction: row; gap: 8px; width: 100%; }
-    .form-group.row > div { display: flex; flex-direction: column; gap: 5px; min-width: 0; flex: 1; }
+    .form-group.row { display: flex; flex-direction: row; gap: 8px; width: 100%; justify-content: space-between; }
+    .form-group.row > div { display: flex; flex-direction: column; gap: 5px; min-width: 0; flex: 0 0 48%; }
     
-    /* พิเศษสำหรับช่องวันที่และเวลา ปรับความกว้างให้เหลือ 80% และจัดให้อยู่ตรงกลาง */
-    .form-group.date-time-group input {
-      width: 80% !important;
-      max-width: 80% !important;
-      margin: 0 auto;
-    }
-    .form-group.date-time-group label {
-      text-align: center;
-      padding-left: 0;
-    }
-
     label { font-size: 13px; font-weight: 500; color: #5BA4E5; padding-left: 5px; }
     
     input, textarea { 
@@ -189,16 +178,16 @@
         <input type="tel" id="phoneField" required placeholder="08X-XXX-XXXX">
       </div>
 
-      <!-- วันที่โอน (ปรับเหลือ 80%) -->
-      <div class="form-group date-time-group">
-        <label>วันที่โอน</label>
-        <input type="date" id="dateField" required>
-      </div>
-
-      <!-- เวลาที่โอน (ปรับเหลือ 80%) -->
-      <div class="form-group date-time-group">
-        <label>เวลาที่โอน</label>
-        <input type="time" id="timeField" required>
+      <!-- วันที่และเวลาโอน (บรรทัดเดียวกัน ช่องละประมาณ 48%) -->
+      <div class="form-group row">
+        <div>
+          <label>วันที่โอน</label>
+          <input type="date" id="dateField" required>
+        </div>
+        <div>
+          <label>เวลาที่โอน</label>
+          <input type="time" id="timeField" required>
+        </div>
       </div>
 
       <div class="form-group">
