@@ -193,9 +193,7 @@
         <span id="confirmedOrderId">XH000000</span>
         <button class="btn-copy" onclick="copySpecificOrderId()" data-key="btnCopyNum">คัดลอกเลข</button>
       </div>
-      <!-- ปุ่มเช็คสถานะสินค้า -->
       <button class="btn-search" style="width: 100%; padding: 12px; margin-bottom: 8px; background-color: var(--pastel-blue-dark); color: white;" onclick="goToStatusCheck()" data-key="btnCheckStatusNow">เช็คสถานะสินค้า 📦🔍</button>
-      <!-- ปุ่มแจ้งโอนออเดอร์ใหม่ -->
       <button class="btn-search" style="width: 100%; padding: 10px;" onclick="resetFormToNewOrder()" data-key="btnNewOrder">แจ้งโอนออเดอร์ใหม่ 🔄</button>
     </div>
 
@@ -255,9 +253,10 @@
           <input type="text" id="contactField" required placeholder="เช่น @custhesun">
         </div>
 
+        <!-- เบอร์โทรศัพท์ (บังคับใส่เฉพาะตัวเลข, สูงสุด 10 หลัก) -->
         <div class="form-group">
           <label data-key="labelPhone">เบอร์โทรศัพท์</label>
-          <input type="tel" id="phoneField" required placeholder="08X-XXX-XXXX">
+          <input type="tel" id="phoneField" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required placeholder="08XXXXXXXX">
         </div>
 
         <!-- จำนวนเงินที่โอน -->
@@ -444,16 +443,11 @@
     }
   }
 
-  // ฟังก์ชันกดปุ่มเช็คสถานะจากหน้าสำเร็จ พากระโดดไปหน้าสถานะพร้อมกรอกเลขออเดอร์ให้เลย
   function goToStatusCheck() {
     const orderId = document.getElementById('confirmedOrderId').innerText;
     document.getElementById('searchInput').value = orderId;
-    
-    // สลับไปแท็บสถานะ
     const statusTabBtn = document.querySelectorAll('.nav-btn')[2];
     openTab('statusTab', statusTabBtn);
-    
-    // กดค้นหาให้อัตโนมัติทันที
     searchStatus();
   }
 
