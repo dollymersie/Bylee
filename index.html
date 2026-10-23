@@ -67,21 +67,37 @@
     .btn-copy { background: white; color: var(--pastel-blue-dark); border: 2px solid white; padding: 8px 12px; border-radius: 12px; font-family: 'Kanit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
     .btn-copy:hover { background: var(--pastel-blue-dark); color: white; }
     
-    /* สไตล์ปุ่มคัดลอกแบบแนบข้างในช่องเลขออเดอร์ */
-    .btn-copy-inline { 
-      background-color: var(--pastel-blue-dark); 
-      color: white; 
-      border: none; 
-      padding: 0 15px; 
-      border-radius: 12px; 
-      font-family: 'Kanit', sans-serif; 
-      font-size: 14px; 
-      font-weight: 600; 
-      cursor: pointer; 
-      transition: 0.2s; 
-      white-space: nowrap;
+    /* ดีไซน์ช่องเลขออเดอร์ให้ปุ่มคัดลอกอยู่ฝั่งขวาข้างในกรอบสีฟ้า */
+    .order-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
     }
-    .btn-copy-inline:hover { background-color: #5BA4E5; }
+    .order-input-wrapper input {
+      width: 100% !important;
+      padding-right: 90px !important; /* เว้นที่ด้านขวาไว้ให้ปุ่ม */
+    }
+    .order-input-wrapper .btn-copy-inside {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--pastel-blue-dark);
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 9px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: 0.2s;
+    }
+    .order-input-wrapper .btn-copy-inside:hover {
+      background-color: #5BA4E5;
+    }
 
     .payment-form { display: flex; flex-direction: column; gap: 12px; width: 100%; }
     .form-group { display: flex; flex-direction: column; gap: 5px; width: 100%; }
@@ -179,12 +195,12 @@
 
       <form class="payment-form" id="payForm" onsubmit="handleFormSubmit(event)">
         
-        <!-- เลขออเดอร์พร้อมปุ่มคัดลอกบรรทัดเดียวกัน และโน้ตด้านล่าง -->
+        <!-- เลขออเดอร์ที่มีปุ่มคัดลอกอยู่ข้างในกรอบสีฟ้า พร้อมโน้ตด้านล่าง -->
         <div class="form-group">
           <label>เลขออเดอร์</label>
-          <div style="display: flex; gap: 8px;">
-            <input type="text" id="orderIdField" readonly style="flex: 1;">
-            <button type="button" class="btn-copy-inline" onclick="copyFieldOrderId()">คัดลอก</button>
+          <div class="order-input-wrapper">
+            <input type="text" id="orderIdField" readonly>
+            <button type="button" class="btn-copy-inside" onclick="copyFieldOrderId()">คัดลอก</button>
           </div>
           <p style="font-size: 12px; color: #E53E3E; padding-left: 5px; margin-top: 2px;">📌 รบกวนจำเลขออเดอร์ เพื่อนำไปเช็คสถานะการจัดส่งค่ะ</p>
         </div>
