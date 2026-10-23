@@ -113,7 +113,7 @@
     .form-group { display: flex; flex-direction: column; gap: 5px; width: 100%; }
     .form-group.row { display: flex; flex-direction: row; gap: 8px; width: 100%; justify-content: space-between; }
     
-    /* ล็อกขนาดช่องวันที่และเวลาให้เหลือ 95% และชิดซ้าย */
+    /* ล็อกขนาดเฉพาะช่องวันที่และเวลาให้เหลือ 95% ส่วนช่องอื่น 100% ปกติ */
     .form-group.date-time-95 input {
       width: 95% !important;
       max-width: 95% !important;
@@ -258,13 +258,19 @@
           <input type="tel" id="phoneField" required placeholder="08X-XXX-XXXX">
         </div>
 
-        <!-- วันที่โอน (ปรับเหลือ 95%) -->
+        <!-- จำนวนเงินที่โอน (100% ปกติ) -->
+        <div class="form-group">
+          <label data-key="labelAmount">จำนวนเงินที่โอน (บาท) 💵</label>
+          <input type="number" step="0.01" id="amountField" required data-placeholder="amountPlaceholder" placeholder="เช่น 350.00">
+        </div>
+
+        <!-- วันที่โอน (95%) -->
         <div class="form-group date-time-95">
           <label data-key="labelDate">วันที่โอน</label>
           <input type="date" id="dateField" required>
         </div>
 
-        <!-- เวลาที่โอน (ปรับเหลือ 95%) -->
+        <!-- เวลาที่โอน (95%) -->
         <div class="form-group date-time-95">
           <label data-key="labelTime">เวลาที่โอน</label>
           <input type="time" id="timeField" required>
@@ -323,6 +329,8 @@
       addressPlaceholder: "บ้านเลขที่, ตำบล, อำเภอ, จังหวัด, รหัสไปรษณีย์",
       labelContact: "ช่องทางติดต่อ (X, Line)",
       labelPhone: "เบอร์โทรศัพท์",
+      labelAmount: "จำนวนเงินที่โอน (บาท) 💵",
+      amountPlaceholder: "เช่น 350.00",
       labelDate: "วันที่โอน",
       labelTime: "เวลาที่โอน",
       labelSlip: "แนบรูปสลิป",
@@ -366,6 +374,8 @@
       addressPlaceholder: "House no., District, Province, Postal Code",
       labelContact: "Contact (X, Line)",
       labelPhone: "Phone Number",
+      labelAmount: "Transfer Amount (THB) 💵",
+      amountPlaceholder: "e.g., 350.00",
       labelDate: "Transfer Date",
       labelTime: "Transfer Time",
       labelSlip: "Attach Slip",
@@ -477,6 +487,7 @@
       address: document.getElementById('addressField').value,
       contact: document.getElementById('contactField').value,
       phone: document.getElementById('phoneField').value,
+      amount: document.getElementById('amountField').value,
       date: document.getElementById('dateField').value,
       time: document.getElementById('timeField').value
     });
