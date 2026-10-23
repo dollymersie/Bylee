@@ -113,7 +113,6 @@
     .form-group { display: flex; flex-direction: column; gap: 5px; width: 100%; }
     .form-group.row { display: flex; flex-direction: row; gap: 8px; width: 100%; justify-content: space-between; }
     
-    /* ล็อกขนาดเฉพาะช่องวันที่และเวลาให้เหลือ 95% ส่วนช่องอื่น 100% ปกติ */
     .form-group.date-time-95 input {
       width: 95% !important;
       max-width: 95% !important;
@@ -194,7 +193,10 @@
         <span id="confirmedOrderId">XH000000</span>
         <button class="btn-copy" onclick="copySpecificOrderId()" data-key="btnCopyNum">คัดลอกเลข</button>
       </div>
-      <button class="btn-search" style="width: 100%; padding: 10px; margin-top: 5px;" onclick="resetFormToNewOrder()" data-key="btnNewOrder">แจ้งโอนออเดอร์ใหม่ 🔄</button>
+      <!-- ปุ่มเช็คสถานะสินค้า -->
+      <button class="btn-search" style="width: 100%; padding: 12px; margin-bottom: 8px; background-color: var(--pastel-blue-dark); color: white;" onclick="goToStatusCheck()" data-key="btnCheckStatusNow">เช็คสถานะสินค้า 📦🔍</button>
+      <!-- ปุ่มแจ้งโอนออเดอร์ใหม่ -->
+      <button class="btn-search" style="width: 100%; padding: 10px;" onclick="resetFormToNewOrder()" data-key="btnNewOrder">แจ้งโอนออเดอร์ใหม่ 🔄</button>
     </div>
 
     <div id="paymentFormContainer">
@@ -258,19 +260,19 @@
           <input type="tel" id="phoneField" required placeholder="08X-XXX-XXXX">
         </div>
 
-        <!-- จำนวนเงินที่โอน (100% ปกติ) -->
+        <!-- จำนวนเงินที่โอน -->
         <div class="form-group">
           <label data-key="labelAmount">จำนวนเงินที่โอน (บาท) 💵</label>
           <input type="number" step="0.01" id="amountField" required data-placeholder="amountPlaceholder" placeholder="เช่น 350.00">
         </div>
 
-        <!-- วันที่โอน (95%) -->
+        <!-- วันที่โอน -->
         <div class="form-group date-time-95">
           <label data-key="labelDate">วันที่โอน</label>
           <input type="date" id="dateField" required>
         </div>
 
-        <!-- เวลาที่โอน (95%) -->
+        <!-- เวลาที่โอน -->
         <div class="form-group date-time-95">
           <label data-key="labelTime">เวลาที่โอน</label>
           <input type="time" id="timeField" required>
@@ -314,6 +316,7 @@
       successHead: "🎉 แจ้งชำระเงินสำเร็จ!",
       successDesc: "รบกวนจำเลขออเดอร์ เพื่อนำไปเช็คสถานะการจัดส่งค่ะ",
       btnCopyNum: "คัดลอกเลข",
+      btnCheckStatusNow: "เช็คสถานะสินค้า 📦🔍",
       btnNewOrder: "แจ้งโอนออเดอร์ใหม่ 🔄",
       warningText: "⚠️ โอนผิด โอนใหม่ ไม่โอนคืนนะคะ! <br>รบกวนเช็คชื่อและเลขบัญชีให้ดีก่อนโอนน้า 💛",
       bankName: "BBL (ธ.กรุงเทพ)",
@@ -359,6 +362,7 @@
       successHead: "🎉 Payment Submitted!",
       successDesc: "Please save your Order ID to check your shipping status.",
       btnCopyNum: "Copy ID",
+      btnCheckStatusNow: "Check Status 📦🔍",
       btnNewOrder: "New Order 🔄",
       warningText: "⚠️ Wrong transfer, no refund! <br>Please double-check account name and number before transferring 💛",
       bankName: "BBL (Bangkok Bank)",
@@ -438,6 +442,19 @@
         orderField.value = generateOrderNumber();
       }
     }
+  }
+
+  // ฟังก์ชันกดปุ่มเช็คสถานะจากหน้าสำเร็จ พากระโดดไปหน้าสถานะพร้อมกรอกเลขออเดอร์ให้เลย
+  function goToStatusCheck() {
+    const orderId = document.getElementById('confirmedOrderId').innerText;
+    document.getElementById('searchInput').value = orderId;
+    
+    // สลับไปแท็บสถานะ
+    const statusTabBtn = document.querySelectorAll('.nav-btn')[2];
+    openTab('statusTab', statusTabBtn);
+    
+    // กดค้นหาให้อัตโนมัติทันที
+    searchStatus();
   }
 
   let toastTimeout;
