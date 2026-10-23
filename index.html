@@ -43,12 +43,20 @@
       display: flex;
       flex-direction: column;
     }
-    .nav-tabs { display: flex; gap: 10px; background: var(--bg-color); padding: 8px; border-radius: 30px; margin-bottom: 25px; }
-    .nav-btn { flex: 1; border: none; background: transparent; padding: 10px 5px; border-radius: 20px; font-family: 'Kanit', sans-serif; font-weight: 500; font-size: 14px; color: var(--text-light); cursor: pointer; transition: all 0.3s ease; }
+    
+    /* ส่วนหัว: แถบเมนู และ ปุ่มเปลี่ยนภาษา */
+    .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .nav-tabs { display: flex; gap: 8px; background: var(--bg-color); padding: 6px; border-radius: 30px; flex: 1; }
+    .nav-btn { flex: 1; border: none; background: transparent; padding: 8px 4px; border-radius: 20px; font-family: 'Kanit', sans-serif; font-weight: 500; font-size: 13px; color: var(--text-light); cursor: pointer; transition: all 0.3s ease; text-align: center; }
     .nav-btn.active { background-color: var(--pastel-blue-dark); color: var(--white); box-shadow: 0 4px 10px rgba(137, 207, 240, 0.4); }
+    
+    .lang-toggle-btn { background: var(--pastel-yellow-dark); border: none; padding: 8px 12px; border-radius: 20px; font-family: 'Kanit', sans-serif; font-weight: 600; font-size: 12px; color: #9D8A00; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s; white-space: nowrap; margin-left: 8px; }
+    .lang-toggle-btn:hover { background-color: var(--pastel-yellow); }
+
     .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
     .tab-content.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    
     h2.page-title { text-align: center; color: #5BA4E5; font-size: 22px; font-weight: 600; margin-bottom: 20px; }
     .home-layout { text-align: center; }
     .hero-image { width: 180px; height: 180px; object-fit: cover; border-radius: 50%; border: 5px solid var(--pastel-yellow); box-shadow: 0 6px 15px rgba(0,0,0,0.1); margin: 10px auto 20px auto; display: block; }
@@ -57,6 +65,7 @@
     .social-btn:hover { transform: translateY(-3px); background-color: var(--pastel-blue); color: var(--white); }
     .x-icon { font-weight: bold; font-size: 18px; }
     .warning-box { background-color: var(--pastel-yellow); border: 1px dashed #F4D03F; color: #B8860B; padding: 12px; border-radius: var(--border-radius-md); font-size: 14px; text-align: center; margin-bottom: 20px; }
+    
     .bank-card { background: linear-gradient(135deg, var(--pastel-blue) 0%, var(--pastel-yellow) 100%); padding: 15px; border-radius: var(--border-radius-md); display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
     .bank-info-left { display: flex; align-items: center; gap: 15px; }
     .bank-logo { width: 45px; height: 45px; object-fit: contain; mix-blend-mode: multiply; border-radius: 10px; padding: 2px; }
@@ -67,7 +76,6 @@
     .btn-copy { background: white; color: var(--pastel-blue-dark); border: 2px solid white; padding: 8px 12px; border-radius: 12px; font-family: 'Kanit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
     .btn-copy:hover { background: var(--pastel-blue-dark); color: white; }
     
-    /* ดีไซน์ช่องเลขออเดอร์พร้อมปุ่มคัดลอกพื้นหลังขาว ตัวอักษรสีฟ้าอยู่ข้างใน */
     .order-input-wrapper {
       position: relative;
       display: flex;
@@ -132,7 +140,6 @@
     .result-box { background-color: var(--bg-color); border: 2px solid var(--pastel-blue); border-radius: var(--border-radius-md); padding: 20px; text-align: left; display: none; width: 100%; word-break: break-word; }
     .result-box h3 { margin-bottom: 10px; }
     
-    /* กล่องแสดงผลสำเร็จหลังแจ้งโอน */
     .success-card { background-color: #E6FFFA; border: 2px solid #38A169; border-radius: var(--border-radius-md); padding: 20px; text-align: center; margin-bottom: 20px; display: none; }
     .success-card h3 { color: #2F855A; margin-bottom: 8px; font-size: 18px; }
     .success-order-box { display: flex; align-items: center; justify-content: space-between; background: white; padding: 10px 15px; border-radius: 12px; border: 1px solid #38A169; margin: 12px 0; }
@@ -145,17 +152,21 @@
 <body>
 
 <div class="app-container">
-  <div class="nav-tabs">
-    <button class="nav-btn active" onclick="openTab('homeTab', this)">🏠 หน้าหลัก</button>
-    <button class="nav-btn" onclick="openTab('paymentTab', this)">💸 ชำระเงิน</button>
-    <button class="nav-btn" onclick="openTab('statusTab', this)">🚚 สถานะ</button>
+  <!-- ส่วนหัวเว็บ: แท็บเมนู และปุ่มสลับภาษา -->
+  <div class="top-header">
+    <div class="nav-tabs">
+      <button class="nav-btn active" onclick="openTab('homeTab', this)" data-key="tabHome">🏠 หน้าหลัก</button>
+      <button class="nav-btn" onclick="openTab('paymentTab', this)" data-key="tabPayment">💸 ชำระเงิน</button>
+      <button class="nav-btn" onclick="openTab('statusTab', this)" data-key="tabStatus">🚚 สถานะ</button>
+    </div>
+    <button class="lang-toggle-btn" onclick="toggleLanguage()">🇬🇧 EN / TH</button>
   </div>
 
   <!-- หน้าแรก -->
   <div id="homeTab" class="tab-content active home-layout">
     <h2 class="page-title">✨ BYLEE ✨</h2>
     <img src="https://t1.blockdit.com/photos/2020/11/5fb952383d4b9b0cc0fd7d2e_800x0xcover_3aaaqsST.jpg" alt="Shin-chan" class="hero-image">
-    <div class="badge-info">ส่งสินค้าทุกวันเสาร์ - อาทิตย์ 📦</div>
+    <div class="badge-info" data-key="shippingInfo">ส่งสินค้าทุกวันเสาร์ - อาทิตย์ 📦</div>
     <div>
       <a href="https://x.com/custhesun" target="_blank" class="social-btn">
         <span class="x-icon">𝕏</span> @custhesun
@@ -165,21 +176,21 @@
 
   <!-- หน้าชำระเงิน -->
   <div id="paymentTab" class="tab-content">
-    <h2 class="page-title">💸 Payment 💸</h2>
+    <h2 class="page-title" data-key="paymentTitle">💸 Payment 💸</h2>
     
     <!-- กล่องแสดงเลขออเดอร์หลังส่งสำเร็จ -->
     <div id="successCard" class="success-card">
-      <h3>🎉 แจ้งชำระเงินสำเร็จ!</h3>
-      <p style="font-size: 13px; color: #4A5568;">รบกวนจำเลขออเดอร์ เพื่อนำไปเช็คสถานะการจัดส่งค่ะ</p>
+      <h3 data-key="successHead">🎉 แจ้งชำระเงินสำเร็จ!</h3>
+      <p style="font-size: 13px; color: #4A5568;" data-key="successDesc">รบกวนจำเลขออเดอร์ เพื่อนำไปเช็คสถานะการจัดส่งค่ะ</p>
       <div class="success-order-box">
         <span id="confirmedOrderId">XH000000</span>
-        <button class="btn-copy" onclick="copySpecificOrderId()">คัดลอกเลข</button>
+        <button class="btn-copy" onclick="copySpecificOrderId()" data-key="btnCopyNum">คัดลอกเลข</button>
       </div>
-      <button class="btn-search" style="width: 100%; padding: 10px; margin-top: 5px;" onclick="resetFormToNewOrder()">แจ้งโอนออเดอร์ใหม่ 🔄</button>
+      <button class="btn-search" style="width: 100%; padding: 10px; margin-top: 5px;" onclick="resetFormToNewOrder()" data-key="btnNewOrder">แจ้งโอนออเดอร์ใหม่ 🔄</button>
     </div>
 
     <div id="paymentFormContainer">
-      <div class="warning-box">
+      <div class="warning-box" data-key="warningText">
         ⚠️ โอนผิด โอนใหม่ ไม่โอนคืนนะคะ! <br>รบกวนเช็คชื่อและเลขบัญชีให้ดีก่อนโอนน้า 💛
       </div>
 
@@ -187,87 +198,87 @@
         <div class="bank-info-left">
           <img src="https://i.pinimg.com/564x/1a/9f/a5/1a9fa59de070d1ff9a1d86e01e1ba749.jpg" alt="BBL Logo" class="bank-logo">
           <div class="bank-details">
-            <h4>BBL (ธ.กรุงเทพ)</h4>
+            <h4 data-key="bankName">BBL (ธ.กรุงเทพ)</h4>
             <h3>907-0-402749</h3>
             <p>Onwarang Su.</p>
           </div>
         </div>
-        <button class="btn-copy" onclick="copyAccNumber()">คัดลอก</button>
+        <button class="btn-copy" onclick="copyAccNumber()" data-key="btnCopy">คัดลอก</button>
       </div>
 
       <form class="payment-form" id="payForm" onsubmit="handleFormSubmit(event)">
         
-        <!-- เลขออเดอร์พร้อมปุ่มคัดลอกพื้นหลังขาว ตัวอักษรสีฟ้า -->
+        <!-- เลขออเดอร์พร้อมปุ่มคัดลอก -->
         <div class="form-group">
-          <label>เลขออเดอร์</label>
+          <label data-key="labelOrderId">เลขออเดอร์</label>
           <div class="order-input-wrapper">
             <input type="text" id="orderIdField" readonly>
-            <button type="button" class="btn-copy-inside" onclick="copyFieldOrderId()">คัดลอก</button>
+            <button type="button" class="btn-copy-inside" onclick="copyFieldOrderId()" data-key="btnCopy">คัดลอก</button>
           </div>
-          <p style="font-size: 12px; color: #E53E3E; padding-left: 5px; margin-top: 2px;">📌 รบกวนจำเลขออเดอร์ เพื่อนำไปเช็คสถานะการจัดส่งค่ะ</p>
+          <p style="font-size: 12px; color: #E53E3E; padding-left: 5px; margin-top: 2px;" data-key="orderNote">📌 รบกวนจำเลขออเดอร์ เพื่อนำไปเช็คสถานะการจัดส่งค่ะ</p>
         </div>
 
         <!-- รายการสินค้าและจำนวน -->
         <div class="form-group row" style="justify-content: space-between; margin-top: 5px;">
           <div style="flex: 2.8; min-width: 0;">
-            <label>รายการสินค้า 🛍️</label>
-            <input type="text" id="itemField" required placeholder="ระบุชื่อสินค้า/ลายที่สั่ง">
+            <label data-key="labelItem">รายการสินค้า 🛍️</label>
+            <input type="text" id="itemField" required data-placeholder="itemPlaceholder" placeholder="ระบุชื่อสินค้า/ลายที่สั่ง">
           </div>
           <div style="flex: 1.2; min-width: 0;">
-            <label>จำนวน 🔢</label>
+            <label data-key="labelQty">จำนวน 🔢</label>
             <input type="number" id="quantityField" min="1" value="1" required>
           </div>
         </div>
 
         <div class="form-group">
-          <label>ชื่อ-นามสกุล</label>
-          <input type="text" id="nameField" required placeholder="ชื่อผู้รับพัสดุ">
+          <label data-key="labelName">ชื่อ-นามสกุล</label>
+          <input type="text" id="nameField" required data-placeholder="namePlaceholder" placeholder="ชื่อผู้รับพัสดุ">
         </div>
 
         <div class="form-group">
-          <label>ที่อยู่จัดส่ง</label>
-          <textarea id="addressField" rows="2" required placeholder="บ้านเลขที่, ตำบล, อำเภอ, จังหวัด, รหัสไปรษณีย์"></textarea>
+          <label data-key="labelAddress">ที่อยู่จัดส่ง</label>
+          <textarea id="addressField" rows="2" required data-placeholder="addressPlaceholder" placeholder="บ้านเลขที่, ตำบล, อำเภอ, จังหวัด, รหัสไปรษณีย์"></textarea>
         </div>
 
         <div class="form-group">
-          <label>ช่องทางติดต่อ (X, Line)</label>
+          <label data-key="labelContact">ช่องทางติดต่อ (X, Line)</label>
           <input type="text" id="contactField" required placeholder="เช่น @custhesun">
         </div>
 
         <div class="form-group">
-          <label>เบอร์โทรศัพท์</label>
+          <label data-key="labelPhone">เบอร์โทรศัพท์</label>
           <input type="tel" id="phoneField" required placeholder="08X-XXX-XXXX">
         </div>
 
         <!-- วันที่โอน -->
         <div class="form-group date-time-left">
-          <label>วันที่โอน</label>
+          <label data-key="labelDate">วันที่โอน</label>
           <input type="date" id="dateField" required>
         </div>
 
         <!-- เวลาที่โอน -->
         <div class="form-group date-time-left">
-          <label>เวลาที่โอน</label>
+          <label data-key="labelTime">เวลาที่โอน</label>
           <input type="time" id="timeField" required>
         </div>
 
         <div class="form-group">
-          <label>แนบรูปสลิป</label>
+          <label data-key="labelSlip">แนบรูปสลิป</label>
           <input type="file" accept="image/*" required>
         </div>
 
-        <button type="submit" class="btn-submit" id="submitBtn">ยืนยันการแจ้งโอน ✨</button>
+        <button type="submit" class="btn-submit" id="submitBtn" data-key="btnSubmit">ยืนยันการแจ้งโอน ✨</button>
       </form>
     </div>
   </div>
 
   <!-- หน้าเช็คสถานะ -->
   <div id="statusTab" class="tab-content">
-    <h2 class="page-title">🚚 เช็คสถานะ 🚚</h2>
-    <label style="margin-bottom: 5px; display:block;">กรอกเลขออเดอร์ของคุณ</label>
+    <h2 class="page-title" data-key="statusTitle">🚚 เช็คสถานะ 🚚</h2>
+    <label style="margin-bottom: 5px; display:block;" data-key="labelCheckOrder">กรอกเลขออเดอร์ของคุณ</label>
     <div class="search-container">
-      <input type="text" id="searchInput" placeholder="เช่น XH123456">
-      <button class="btn-search" onclick="searchStatus()">ค้นหา 🔍</button>
+      <input type="text" id="searchInput" placeholder="เช่น XH123456" data-placeholder="searchPlaceholder">
+      <button class="btn-search" onclick="searchStatus()" data-key="btnSearch">ค้นหา 🔍</button>
     </div>
     <div id="statusResult" class="result-box"></div>
   </div>
@@ -278,6 +289,119 @@
 
 <script>
   const API_URL = "https://script.google.com/macros/s/AKfycbxd3o-7Jv3XvKhYJ83ulEO7p_3brqXfXveGaQWHAPU-lBJHW3mIR1rY0XYFW-2vtWfn/exec";
+
+  // พจนานุกรม 2 ภาษา (ไทย - อังกฤษ)
+  const translations = {
+    th: {
+      tabHome: "🏠 หน้าหลัก",
+      tabPayment: "💸 ชำระเงิน",
+      tabStatus: "🚚 สถานะ",
+      shippingInfo: "ส่งสินค้าทุกวันเสาร์ - อาทิตย์ 📦",
+      paymentTitle: "💸 Payment 💸",
+      successHead: "🎉 แจ้งชำระเงินสำเร็จ!",
+      successDesc: "รบกวนจำเลขออเดอร์ เพื่อนำไปเช็คสถานะการจัดส่งค่ะ",
+      btnCopyNum: "คัดลอกเลข",
+      btnNewOrder: "แจ้งโอนออเดอร์ใหม่ 🔄",
+      warningText: "⚠️ โอนผิด โอนใหม่ ไม่โอนคืนนะคะ! <br>รบกวนเช็คชื่อและเลขบัญชีให้ดีก่อนโอนน้า 💛",
+      bankName: "BBL (ธ.กรุงเทพ)",
+      btnCopy: "คัดลอก",
+      labelOrderId: "เลขออเดอร์",
+      orderNote: "📌 รบกวนจำเลขออเดอร์ เพื่อนำไปเช็คสถานะการจัดส่งค่ะ",
+      labelItem: "รายการสินค้า 🛍️",
+      itemPlaceholder: "ระบุชื่อสินค้า/ลายที่สั่ง",
+      labelQty: "จำนวน 🔢",
+      labelName: "ชื่อ-นามสกุล",
+      namePlaceholder: "ชื่อผู้รับพัสดุ",
+      labelAddress: "ที่อยู่จัดส่ง",
+      addressPlaceholder: "บ้านเลขที่, ตำบล, อำเภอ, จังหวัด, รหัสไปรษณีย์",
+      labelContact: "ช่องทางติดต่อ (X, Line)",
+      labelPhone: "เบอร์โทรศัพท์",
+      labelDate: "วันที่โอน",
+      labelTime: "เวลาที่โอน",
+      labelSlip: "แนบรูปสลิป",
+      btnSubmit: "ยืนยันการแจ้งโอน ✨",
+      statusTitle: "🚚 เช็คสถานะ 🚚",
+      labelCheckOrder: "กรอกเลขออเดอร์ของคุณ",
+      searchPlaceholder: "เช่น XH123456",
+      btnSearch: "ค้นหา 🔍",
+      toastCopyAcc: "📋 คัดลอกเลขบัญชี 907-0-402749 สำเร็จ!",
+      toastCopyOrder: "📋 คัดลอกเลขออเดอร์ ",
+      toastSuccess: "🎉 แจ้งชำระเงินเรียบร้อยแล้ว!",
+      toastError: "❌ เกิดข้อผิดพลาด กรุณาลองใหม่",
+      toastConnectError: "❌ เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ",
+      toastEmptyOrder: "⚠️ กรุณากรอกเลขออเดอร์ก่อนนะคะ",
+      statusNotFound: "❌ ไม่พบออเดอร์ ",
+      statusNotFoundDesc: " ในระบบ รบกวนตรวจสอบเลขอีกครั้งนะคะ 🥺",
+      statusFoundText: "📌 สถานะ: ",
+      statusThanks: "ขอบคุณที่อุดหนุนร้าน BYLEE นะคะ 💛"
+    },
+    en: {
+      tabHome: "🏠 Home",
+      tabPayment: "💸 Payment",
+      tabStatus: "🚚 Status",
+      shippingInfo: "Shipping every Saturday - Sunday 📦",
+      paymentTitle: "💸 Payment 💸",
+      successHead: "🎉 Payment Submitted!",
+      successDesc: "Please save your Order ID to check your shipping status.",
+      btnCopyNum: "Copy ID",
+      btnNewOrder: "New Order 🔄",
+      warningText: "⚠️ Wrong transfer, no refund! <br>Please double-check account name and number before transferring 💛",
+      bankName: "BBL (Bangkok Bank)",
+      btnCopy: "Copy",
+      labelOrderId: "Order ID",
+      orderNote: "📌 Please remember your Order ID to check delivery status.",
+      labelItem: "Item(s) 🛍️",
+      itemPlaceholder: "Enter item name/design",
+      labelQty: "Quantity 🔢",
+      labelName: "Full Name",
+      namePlaceholder: "Recipient Name",
+      labelAddress: "Shipping Address",
+      addressPlaceholder: "House no., District, Province, Postal Code",
+      labelContact: "Contact (X, Line)",
+      labelPhone: "Phone Number",
+      labelDate: "Transfer Date",
+      labelTime: "Transfer Time",
+      labelSlip: "Attach Slip",
+      btnSubmit: "Confirm Payment ✨",
+      statusTitle: "🚚 Check Status 🚚",
+      labelCheckOrder: "Enter your Order ID",
+      searchPlaceholder: "e.g., XH123456",
+      btnSearch: "Search 🔍",
+      toastCopyAcc: "📋 Copied account number 907-0-402749 successfully!",
+      toastCopyOrder: "📋 Copied Order ID ",
+      toastSuccess: "🎉 Payment submitted successfully!",
+      toastError: "❌ An error occurred, please try again",
+      toastConnectError: "❌ Server connection failed",
+      toastEmptyOrder: "⚠️ Please enter your Order ID first",
+      statusNotFound: "❌ Order ",
+      statusNotFoundDesc: " not found in system. Please check your ID again 🥺",
+      statusFoundText: "📌 Status: ",
+      statusThanks: "Thank you for supporting BYLEE Store 💛"
+    }
+  };
+
+  let currentLang = 'th';
+
+  function toggleLanguage() {
+    currentLang = currentLang === 'th' ? 'en' : 'th';
+    updateTexts();
+  }
+
+  function updateTexts() {
+    const t = translations[currentLang];
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const key = el.getAttribute('data-key');
+      if (t[key]) {
+        el.innerHTML = t[key];
+      }
+    });
+    document.querySelectorAll('[data-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-placeholder');
+      if (t[key]) {
+        el.placeholder = t[key];
+      }
+    });
+  }
 
   function generateOrderNumber() {
     const randomNum = Math.floor(100000 + Math.random() * 900000);
@@ -309,28 +433,29 @@
 
   function copyAccNumber() {
     navigator.clipboard.writeText("9070402749").then(() => {
-      showToast("📋 คัดลอกเลขบัญชี 907-0-402749 สำเร็จ!");
+      showToast(translations[currentLang].toastCopyAcc);
     });
   }
 
   function copyFieldOrderId() {
     const val = document.getElementById('orderIdField').value;
     navigator.clipboard.writeText(val).then(() => {
-      showToast("📋 คัดลอกเลขออเดอร์ " + val + " สำเร็จ!");
+      showToast(translations[currentLang].toastCopyOrder + val + "!");
     });
   }
 
   function copySpecificOrderId() {
     const val = document.getElementById('confirmedOrderId').innerText;
     navigator.clipboard.writeText(val).then(() => {
-      showToast("📋 คัดลอกเลขออเดอร์ " + val + " สำเร็จ!");
+      showToast(translations[currentLang].toastCopyOrder + val + "!");
     });
   }
 
   function handleFormSubmit(event) {
     event.preventDefault();
+    const t = translations[currentLang];
     const btn = document.getElementById("submitBtn");
-    btn.innerText = "กำลังส่งข้อมูล... ⏳";
+    btn.innerText = currentLang === 'th' ? "กำลังส่งข้อมูล... ⏳" : "Sending... ⏳";
     btn.disabled = true;
 
     const currentOrderId = document.getElementById('orderIdField').value;
@@ -352,21 +477,20 @@
       .then(res => res.json())
       .then(data => {
         if(data.success) {
-          showToast("🎉 แจ้งชำระเงินเรียบร้อยแล้ว!");
-          
+          showToast(t.toastSuccess);
           document.getElementById('payForm').reset();
           document.getElementById('paymentFormContainer').style.display = 'none';
           document.getElementById('confirmedOrderId').innerText = currentOrderId;
           document.getElementById('successCard').style.display = 'block';
         } else {
-          showToast("❌ เกิดข้อผิดพลาด กรุณาลองใหม่");
+          showToast(t.toastError);
         }
-        btn.innerText = "ยืนยันการแจ้งโอน ✨";
+        btn.innerText = t.btnSubmit;
         btn.disabled = false;
       })
       .catch(() => {
-        showToast("❌ เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ");
-        btn.innerText = "ยืนยันการแจ้งโอน ✨";
+        showToast(t.toastConnectError);
+        btn.innerText = t.btnSubmit;
         btn.disabled = false;
       });
   }
@@ -378,32 +502,33 @@
   }
 
   function searchStatus() {
+    const t = translations[currentLang];
     const input = document.getElementById("searchInput").value.trim();
     const resultBox = document.getElementById("statusResult");
     
     if(input === "") {
-      showToast("⚠️ กรุณากรอกเลขออเดอร์ก่อนนะคะ");
+      showToast(t.toastEmptyOrder);
       return;
     }
     
     resultBox.style.display = "block";
-    resultBox.innerHTML = "กำลังค้นหา... ⏳";
+    resultBox.innerHTML = currentLang === 'th' ? "กำลังค้นหา... ⏳" : "Searching... ⏳";
 
     fetch(API_URL + '?action=check&orderId=' + input)
       .then(res => res.json())
       .then(data => {
         if(data.found) {
           resultBox.innerHTML = `
-            <h3 style="color: #38A169;">📌 สถานะ: ${data.status}</h3>
-            <p><b>เลขออเดอร์:</b> ${input.toUpperCase()}</p>
-            <p style="margin-top: 10px; color: #718096; font-size: 14px;">ขอบคุณที่อุดหนุนร้าน BYLEE นะคะ 💛</p>
+            <h3 style="color: #38A169;">${t.statusFoundText}${data.status}</h3>
+            <p><b>${t.labelOrderId}:</b> ${input.toUpperCase()}</p>
+            <p style="margin-top: 10px; color: #718096; font-size: 14px;">${t.statusThanks}</p>
           `;
         } else {
-          resultBox.innerHTML = `<span style='color: #E53E3E;'>❌ ไม่พบออเดอร์ ${input.toUpperCase()} ในระบบ รบกวนตรวจสอบเลขอีกครั้งนะคะ 🥺</span>`;
+          resultBox.innerHTML = `<span style='color: #E53E3E;'>${t.statusNotFound}${input.toUpperCase()}${t.statusNotFoundDesc}</span>`;
         }
       })
       .catch(() => {
-        resultBox.innerHTML = `<span style='color: #E53E3E;'>❌ เกิดข้อผิดพลาดในการเชื่อมต่อข้อมูล</span>`;
+        resultBox.innerHTML = `<span style='color: #E53E3E;'>${t.toastConnectError}</span>`;
       });
   }
 </script>
