@@ -327,7 +327,8 @@
 <div id="toastMessage" class="toast">ข้อความ</div>
 
 <script>
-  const API_URL = "https://script.google.com/macros/s/AKfycbwNS_iyd6RRcPFrwt3JcMLJroq850B-k9k19Ng_hCBfy3MpUFyzwS-YpDK7ZuHYL5nAPw/exec";
+  // ลิงก์ Web App ล่าสุดที่ถูกต้องและเชื่อมต่อกับ Google Sheet เรียบร้อยแล้ว
+  const API_URL = "https://script.google.com/macros/s/AKfycbxl-g6OvjPGxR_gorXjKhm2OY5ueCTFINpE_MSRc7VvoDCmzHP3W_lfKGWkmSL5x7_kpw/exec";
 
   const translations = {
     th: {
@@ -369,3 +370,246 @@
       toastCopyOrder: "📋 คัดลอกเลขออเดอร์ ",
       toastSuccess: "🎉 แจ้งชำระเงินเรียบร้อยแล้ว!",
       toastError: "❌ เกิดข้อผิดพลาด กรุณาลองใหม่",
+      toastConnectError: "❌ เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ",
+      toastEmptyOrder: "⚠️ กรุณากรอกเลขออเดอร์ก่อนนะคะ",
+      statusNotFound: "❌ ไม่พบออเดอร์ ",
+      statusNotFoundDesc: " ในระบบ รบกวนตรวจสอบเลขอีกครั้งนะคะ 🥺",
+      lblStatus: "สถานะการจัดส่ง",
+      lblCourier: "บริษัทขนส่ง",
+      lblTracking: "เลขพัสดุ",
+      statusThanks: "ขอบคุณที่อุดหนุนร้าน BYLEE นะคะ 💛"
+    },
+    en: {
+      tabHome: "🏠 Home",
+      tabPayment: "💸 Payment",
+      tabStatus: "🚚 Status",
+      shippingInfo: "Shipping every Saturday - Sunday 📦",
+      paymentTitle: "💸 Payment 💸",
+      successHead: "🎉 Payment Submitted!",
+      successDesc: "Please save your Order ID to check your shipping status.",
+      btnCopyNum: "Copy ID",
+      btnCheckStatusNow: "Check Status 📦🔍",
+      btnNewOrder: "New Order 🔄",
+      warningText: "⚠️ Wrong transfer, no refund! <br>Please double-check account name and number before transferring 💛",
+      bankName: "BBL (Bangkok Bank)",
+      btnCopy: "Copy",
+      labelOrderId: "Order ID",
+      orderNote: "📌 Please remember your Order ID to check delivery status.",
+      labelItem: "Item(s) 🛍️",
+      itemPlaceholder: "Enter item name/design",
+      labelQty: "Quantity 🔢",
+      labelName: "Full Name",
+      namePlaceholder: "Recipient Name",
+      labelAddress: "Shipping Address",
+      addressPlaceholder: "House no., District, Province, Postal Code",
+      labelContact: "Contact (X, Line)",
+      labelPhone: "Phone Number",
+      labelAmount: "Transfer Amount (THB) 💵",
+      amountPlaceholder: "e.g., 350.00",
+      labelDate: "Transfer Date",
+      labelTime: "Transfer Time",
+      labelSlip: "Attach Slip",
+      btnSubmit: "Confirm Payment ✨",
+      statusTitle: "🚚 Check Status 🚚",
+      labelCheckOrder: "Enter your Order ID",
+      searchPlaceholder: "e.g., XH123456",
+      btnSearch: "Search 🔍",
+      toastCopyAcc: "📋 Copied account number 907-0-402749 successfully!",
+      toastCopyOrder: "📋 Copied Order ID ",
+      toastSuccess: "🎉 Payment submitted successfully!",
+      toastError: "❌ An error occurred, please try again",
+      toastConnectError: "❌ Server connection failed",
+      toastEmptyOrder: "⚠️ Please enter your Order ID first",
+      statusNotFound: "❌ Order ",
+      statusNotFoundDesc: " not found in system. Please check your ID again 🥺",
+      lblStatus: "Status",
+      lblCourier: "Courier",
+      lblTracking: "Tracking No.",
+      statusThanks: "Thank you for supporting BYLEE Store 💛"
+    }
+  };
+
+  let currentLang = 'th';
+
+  function toggleLanguage() {
+    currentLang = currentLang === 'th' ? 'en' : 'th';
+    document.getElementById('langLabel').innerText = currentLang === 'th' ? 'TH / EN' : 'EN / TH';
+    updateTexts();
+  }
+
+  function updateTexts() {
+    const t = translations[currentLang];
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const key = el.getAttribute('data-key');
+      if (t[key]) {
+        el.innerHTML = t[key];
+      }
+    });
+    document.querySelectorAll('[data-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-placeholder');
+      if (t[key]) {
+        el.placeholder = t[key];
+      }
+    });
+  }
+
+  function generateOrderNumber() {
+    const randomNum = Math.floor(100000 + Math.random() * 900000);
+    return "XH" + randomNum;
+  }
+
+  function openTab(tabId, btnElement) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    btnElement.classList.add('active');
+
+    if(tabId === 'paymentTab') {
+      const orderField = document.getElementById('orderIdField');
+      if(orderField.value === "") {
+        orderField.value = generateOrderNumber();
+      }
+    }
+  }
+
+  function goToStatusCheck() {
+    const orderId = document.getElementById('confirmedOrderId').innerText;
+    document.getElementById('searchInput').value = orderId;
+    const statusTabBtn = document.querySelectorAll('.nav-btn')[2];
+    openTab('statusTab', statusTabBtn);
+    searchStatus();
+  }
+
+  let toastTimeout;
+  function showToast(msg) {
+    const toast = document.getElementById("toastMessage");
+    toast.innerText = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => { toast.classList.remove("show"); }, 3000);
+  }
+
+  function copyAccNumber() {
+    navigator.clipboard.writeText("9070402749").then(() => {
+      showToast(translations[currentLang].toastCopyAcc);
+    });
+  }
+
+  function copyFieldOrderId() {
+    const val = document.getElementById('orderIdField').value;
+    navigator.clipboard.writeText(val).then(() => {
+      showToast(translations[currentLang].toastCopyOrder + val + "!");
+    });
+  }
+
+  function copySpecificOrderId() {
+    const val = document.getElementById('confirmedOrderId').innerText;
+    navigator.clipboard.writeText(val).then(() => {
+      showToast(translations[currentLang].toastCopyOrder + val + "!");
+    });
+  }
+
+  function handleFormSubmit(event) {
+    event.preventDefault();
+    const t = translations[currentLang];
+    const btn = document.getElementById("submitBtn");
+    btn.innerText = currentLang === 'th' ? "กำลังส่งข้อมูล... ⏳" : "Sending... ⏳";
+    btn.disabled = true;
+
+    const currentOrderId = document.getElementById('orderIdField').value;
+
+    const params = new URLSearchParams({
+      action: 'save',
+      orderId: currentOrderId,
+      item: document.getElementById('itemField').value,
+      quantity: document.getElementById('quantityField').value,
+      name: document.getElementById('nameField').value,
+      address: document.getElementById('addressField').value,
+      contact: document.getElementById('contactField').value,
+      phone: document.getElementById('phoneField').value,
+      amount: document.getElementById('amountField').value,
+      date: document.getElementById('dateField').value,
+      time: document.getElementById('timeField').value
+    });
+
+    fetch(API_URL + '?' + params.toString())
+      .then(res => res.json())
+      .then(data => {
+        if(data.success) {
+          showToast(t.toastSuccess);
+          document.getElementById('payForm').reset();
+          document.getElementById('paymentFormContainer').style.display = 'none';
+          document.getElementById('confirmedOrderId').innerText = currentOrderId;
+          document.getElementById('successCard').style.display = 'block';
+        } else {
+          showToast(t.toastError);
+        }
+        btn.innerText = t.btnSubmit;
+        btn.disabled = false;
+      })
+      .catch(() => {
+        showToast(t.toastConnectError);
+        btn.innerText = t.btnSubmit;
+        btn.disabled = false;
+      });
+  }
+
+  function resetFormToNewOrder() {
+    document.getElementById('successCard').style.display = 'none';
+    document.getElementById('paymentFormContainer').style.display = 'block';
+    document.getElementById('orderIdField').value = generateOrderNumber();
+  }
+
+  function searchStatus() {
+    const t = translations[currentLang];
+    const input = document.getElementById("searchInput").value.trim();
+    const resultBox = document.getElementById("statusResult");
+    
+    if(input === "") {
+      showToast(t.toastEmptyOrder);
+      return;
+    }
+    
+    resultBox.style.display = "block";
+    resultBox.innerHTML = currentLang === 'th' ? "กำลังค้นหา... ⏳" : "Searching... ⏳";
+
+    fetch(API_URL + '?action=check&orderId=' + input)
+      .then(res => res.json())
+      .then(data => {
+        if(data.found) {
+          const courier = data.courier ? data.courier : "-";
+          const tracking = data.tracking ? data.tracking : "-";
+
+          resultBox.innerHTML = `
+            <div class="status-row">
+              <span class="status-label">🆔 ${t.labelOrderId}:</span>
+              <span class="status-value">${input.toUpperCase()}</span>
+            </div>
+            <div class="status-row">
+              <span class="status-label">📌 ${t.lblStatus}:</span>
+              <span class="status-value" style="color: #38A169; font-weight: 600;">${data.status}</span>
+            </div>
+            <div class="status-row">
+              <span class="status-label">🚚 ${t.lblCourier}:</span>
+              <span class="status-value">${courier}</span>
+            </div>
+            <div class="status-row">
+              <span class="status-label">📦 ${t.lblTracking}:</span>
+              <span class="status-value">
+                ${tracking !== "-" ? `<span class="tracking-badge">${tracking}</span>` : "-"}
+              </span>
+            </div>
+            <p style="margin-top: 12px; color: #718096; font-size: 13px; text-align: center;">${t.statusThanks}</p>
+          `;
+        } else {
+          resultBox.innerHTML = `<span style='color: #E53E3E;'>${t.statusNotFound}${input.toUpperCase()}${t.statusNotFoundDesc}</span>`;
+        }
+      })
+      .catch(() => {
+        resultBox.innerHTML = `<span style='color: #E53E3E;'>${t.toastConnectError}</span>`;
+      });
+  }
+</script>
+
+</body>
+</html>
