@@ -67,7 +67,7 @@
     .btn-copy { background: white; color: var(--pastel-blue-dark); border: 2px solid white; padding: 8px 12px; border-radius: 12px; font-family: 'Kanit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
     .btn-copy:hover { background: var(--pastel-blue-dark); color: white; }
     
-    /* ดีไซน์ช่องเลขออเดอร์ให้ปุ่มคัดลอกอยู่ฝั่งขวาข้างในกรอบสีฟ้า */
+    /* ดีไซน์ช่องเลขออเดอร์พร้อมปุ่มคัดลอกพื้นหลังขาว ตัวอักษรสีฟ้าอยู่ข้างใน */
     .order-input-wrapper {
       position: relative;
       display: flex;
@@ -76,16 +76,16 @@
     }
     .order-input-wrapper input {
       width: 100% !important;
-      padding-right: 90px !important; /* เว้นที่ด้านขวาไว้ให้ปุ่ม */
+      padding-right: 90px !important;
     }
     .order-input-wrapper .btn-copy-inside {
       position: absolute;
       right: 6px;
       top: 50%;
       transform: translateY(-50%);
-      background: var(--pastel-blue-dark);
-      color: white;
-      border: none;
+      background: white;
+      color: var(--pastel-blue-dark);
+      border: 2px solid white;
       padding: 6px 14px;
       border-radius: 9px;
       font-family: 'Kanit', sans-serif;
@@ -96,7 +96,9 @@
       transition: 0.2s;
     }
     .order-input-wrapper .btn-copy-inside:hover {
-      background-color: #5BA4E5;
+      background-color: var(--pastel-blue-dark);
+      color: white;
+      border-color: var(--pastel-blue-dark);
     }
 
     .payment-form { display: flex; flex-direction: column; gap: 12px; width: 100%; }
@@ -195,7 +197,7 @@
 
       <form class="payment-form" id="payForm" onsubmit="handleFormSubmit(event)">
         
-        <!-- เลขออเดอร์ที่มีปุ่มคัดลอกอยู่ข้างในกรอบสีฟ้า พร้อมโน้ตด้านล่าง -->
+        <!-- เลขออเดอร์พร้อมปุ่มคัดลอกพื้นหลังขาว ตัวอักษรสีฟ้า -->
         <div class="form-group">
           <label>เลขออเดอร์</label>
           <div class="order-input-wrapper">
