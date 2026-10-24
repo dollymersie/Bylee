@@ -308,8 +308,9 @@
         </div>
 
         <div class="form-group">
-          <label data-key="labelSlip">แนบรูปสลิป</label>
-          <input type="file" id="slipField" accept="image/*" required>
+          <label data-key="labelSlip">แนบรูปสลิป (ไม่บังคับ)</label>
+          <!-- เอาคำว่า required ออกเพื่อให้สามารถส่งฟอร์มได้โดยไม่ต้องแนบรูป -->
+          <input type="file" id="slipField" accept="image/*">
           <p style="font-size: 11px; color: #718096; padding-left: 5px; margin-top: 4px;" data-key="slipNote">ℹ️ หากไม่สามารถอัปโหลดรูปได้ รบกวนส่งสลิปทาง DM: @custhesun</p>
         </div>
 
@@ -368,7 +369,7 @@
       amountPlaceholder: "เช่น 350.00",
       labelDate: "วันที่โอน",
       labelTime: "เวลาที่โอน",
-      labelSlip: "แนบรูปสลิป",
+      labelSlip: "แนบรูปสลิป (ไม่บังคับ)",
       slipNote: "ℹ️ หากไม่สามารถอัปโหลดรูปได้ รบกวนส่งสลิปทาง DM: @custhesun",
       btnSubmit: "ยืนยันการแจ้งโอน ✨",
       statusTitle: "🚚 เช็คสถานะ 🚚",
@@ -419,7 +420,7 @@
       amountPlaceholder: "e.g., 350.00",
       labelDate: "Transfer Date",
       labelTime: "Transfer Time",
-      labelSlip: "Attach Slip",
+      labelSlip: "Attach Slip (Optional)",
       slipNote: "ℹ️ If you cannot upload the slip, please send it via DM: @custhesun",
       btnSubmit: "Confirm Payment ✨",
       statusTitle: "🚚 Check Status 🚚",
@@ -544,68 +545,71 @@
     event.preventDefault();
     const t = translations[currentLang];
     const btn = document.getElementById("submitBtn");
-    btn.innerText = currentLang === 'th' ? "กำลังอัปโหลดสลิป... ⏳" : "Uploading... ⏳";
+    btn.innerText = currentLang === 'th' ? "กำลังบันทึกข้อมูล... ⏳" : "Submitting... ⏳";
     btn.disabled = true;
 
     const currentOrderId = document.getElementById('orderIdField').value;
     const fileInput = document.getElementById('slipField');
     const file = fileInput.files[0];
 
-    if (!file) {
-      showToast("⚠️ กรุณาแนบรูปสลิปด้วยนะคะ");
+    // ถ้ามีการแนบไฟล์ ให้แปลงเป็น Base64 แล้วค่อยส่ง ถ้าไม่มีให้ส่งค่าว่างไป
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        sendDataToScript(currentOrderId, e.target.result, file.name);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      sendDataToScript(currentOrderId, "", "no_slip.jpg");
+    }
+  }
+
+  function sendDataToScript(orderId, base64Data, fileName) {
+    const t = translations[currentLang];
+    const params = new URLSearchParams({
+      action: 'save',
+      orderId: orderId,
+      item: document.getElementById('itemField').value,
+      quantity: document.getElementById('quantityField').value,
+      name: document.getElementById('nameField').value,
+      address: document.getElementById('addressField').value,
+      contact: document.getElementById('contactField').value,
+      phone: document.getElementById('phoneField').value,
+      amount: document.getElementById('amountField').value,
+      date: document.getElementById('dateField').value,
+      time: document.getElementById('timeField').value,
+      slip: base64Data,
+      slipName: fileName
+    });
+
+    fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: params.toString()
+    })
+    .then(res => res.json())
+    .then(data => {
+      const btn = document.getElementById("submitBtn");
+      if(data.success) {
+        showToast(t.toastSuccess);
+        document.getElementById('payForm').reset();
+        document.getElementById('paymentFormContainer').style.display = 'none';
+        document.getElementById('confirmedOrderId').innerText = orderId;
+        document.getElementById('successCard').style.display = 'block';
+      } else {
+        showToast(t.toastError);
+      }
       btn.innerText = t.btnSubmit;
       btn.disabled = false;
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const base64Data = e.target.result;
-
-      const params = new URLSearchParams({
-        action: 'save',
-        orderId: currentOrderId,
-        item: document.getElementById('itemField').value,
-        quantity: document.getElementById('quantityField').value,
-        name: document.getElementById('nameField').value,
-        address: document.getElementById('addressField').value,
-        contact: document.getElementById('contactField').value,
-        phone: document.getElementById('phoneField').value,
-        amount: document.getElementById('amountField').value,
-        date: document.getElementById('dateField').value,
-        time: document.getElementById('timeField').value,
-        slip: base64Data,
-        slipName: file.name
-      });
-
-      fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: params.toString()
-      })
-      .then(res => res.json())
-      .then(data => {
-        if(data.success) {
-          showToast(t.toastSuccess);
-          document.getElementById('payForm').reset();
-          document.getElementById('paymentFormContainer').style.display = 'none';
-          document.getElementById('confirmedOrderId').innerText = currentOrderId;
-          document.getElementById('successCard').style.display = 'block';
-        } else {
-          showToast(t.toastError);
-        }
-        btn.innerText = t.btnSubmit;
-        btn.disabled = false;
-      })
-      .catch(() => {
-        showToast(t.toastConnectError);
-        btn.innerText = t.btnSubmit;
-        btn.disabled = false;
-      });
-    };
-    reader.readAsDataURL(file);
+    })
+    .catch(() => {
+      const btn = document.getElementById("submitBtn");
+      showToast(t.toastConnectError);
+      btn.innerText = t.btnSubmit;
+      btn.disabled = false;
+    });
   }
 
   function resetFormToNewOrder() {
