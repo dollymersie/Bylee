@@ -41,14 +41,13 @@
       box-shadow: 0 10px 30px rgba(137, 207, 240, 0.2);
       border: 3px dashed var(--pastel-blue-dark);
       position: relative;
-      overflow: hidden; /* Prevent scroll issues */
+      overflow: hidden;
       display: flex;
       flex-direction: column;
     }
     
     .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; position: relative; z-index: 50; }
     
-    /* ปุ่ม Hamburger Menu */
     .hamburger-btn {
       background: var(--pastel-blue-dark);
       color: white;
@@ -63,13 +62,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding-bottom: 3px; /* จัดกึ่งกลางไอคอน */
+      padding-bottom: 3px;
     }
-    .hamburger-btn:hover {
-      transform: scale(1.05);
-    }
+    .hamburger-btn:hover { transform: scale(1.05); }
     
-    /* กล่อง Dropdown เมนู */
     .nav-dropdown {
       position: absolute;
       top: 55px;
@@ -192,12 +188,10 @@
 <body>
 
 <div class="app-container">
-  <!-- เมนูด้านบน -->
   <div class="top-header">
     <div style="position: relative;">
       <button class="hamburger-btn" onclick="toggleMenu(event)" title="เมนู">☰</button>
       
-      <!-- Dropdown เมนู 3 ตัวเลือก -->
       <div id="navMenu" class="nav-dropdown">
         <button onclick="navigateFromMenu('homeTab')" data-key="menuHome">🏠 หน้าแรก</button>
         <button onclick="navigateFromMenu('paymentTab')" data-key="menuPayment">💸 แจ้งชำระเงิน</button>
@@ -316,6 +310,7 @@
         <div class="form-group">
           <label data-key="labelSlip">แนบรูปสลิป</label>
           <input type="file" id="slipField" accept="image/*" required>
+          <p style="font-size: 11px; color: #718096; padding-left: 5px; margin-top: 4px;" data-key="slipNote">ℹ️ หากไม่สามารถอัปโหลดรูปได้ รบกวนส่งสลิปทาง DM: @custhesun</p>
         </div>
 
         <button type="submit" class="btn-submit" id="submitBtn" data-key="btnSubmit">ยืนยันการแจ้งโอน ✨</button>
@@ -374,6 +369,7 @@
       labelDate: "วันที่โอน",
       labelTime: "เวลาที่โอน",
       labelSlip: "แนบรูปสลิป",
+      slipNote: "ℹ️ หากไม่สามารถอัปโหลดรูปได้ รบกวนส่งสลิปทาง DM: @custhesun",
       btnSubmit: "ยืนยันการแจ้งโอน ✨",
       statusTitle: "🚚 เช็คสถานะ 🚚",
       labelCheckOrder: "กรอกเลขออเดอร์ของคุณ",
@@ -424,6 +420,7 @@
       labelDate: "Transfer Date",
       labelTime: "Transfer Time",
       labelSlip: "Attach Slip",
+      slipNote: "ℹ️ If you cannot upload the slip, please send it via DM: @custhesun",
       btnSubmit: "Confirm Payment ✨",
       statusTitle: "🚚 Check Status 🚚",
       labelCheckOrder: "Enter your Order ID",
@@ -473,19 +470,16 @@
     return "XH" + randomNum;
   }
   
-  // เปิด-ปิด เมนู Hamburger
   function toggleMenu(event) {
     event.stopPropagation();
     document.getElementById('navMenu').classList.toggle('show');
   }
 
-  // กดเลือกเมนู
   function navigateFromMenu(tabId) {
     openTab(tabId);
     document.getElementById('navMenu').classList.remove('show');
   }
 
-  // ปิดเมนูเมื่อคลิกพื้นที่อื่น
   window.onclick = function(event) {
     if (!event.target.matches('.hamburger-btn')) {
       var dropdowns = document.getElementsByClassName("nav-dropdown");
