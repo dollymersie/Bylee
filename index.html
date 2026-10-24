@@ -308,8 +308,7 @@
         </div>
 
         <div class="form-group">
-          <label data-key="labelSlip">แนบรูปสลิป (ไม่บังคับ)</label>
-          <!-- เอาคำว่า required ออกเพื่อให้สามารถส่งฟอร์มได้โดยไม่ต้องแนบรูป -->
+          <label data-key="labelSlip">แนบรูปสลิป</label>
           <input type="file" id="slipField" accept="image/*">
           <p style="font-size: 11px; color: #718096; padding-left: 5px; margin-top: 4px;" data-key="slipNote">ℹ️ หากไม่สามารถอัปโหลดรูปได้ รบกวนส่งสลิปทาง DM: @custhesun</p>
         </div>
@@ -334,8 +333,8 @@
 <div id="toastMessage" class="toast">ข้อความ</div>
 
 <script>
-  // ลิงก์ Web App ล่าสุด
-  const API_URL = "https://script.google.com/macros/s/AKfycbwcCjQ0vS6rSCqG7ob9W_DORXpMIykeKCoxFRljBQHaMRADJGYw7Pakz9-ZA6L-fktvNQ/exec";
+  // อัปเดตลิงก์ API_URL ใหม่เรียบร้อยแล้ว
+  const API_URL = "https://script.google.com/macros/s/AKfycbxHM9flgv1Br5B7Xe5cHRzmqKVpoGt5ZW9q4a5IN8OmUrfpWdJ3FCfMa56U828s_DtDQg/exec";
 
   const translations = {
     th: {
@@ -369,7 +368,7 @@
       amountPlaceholder: "เช่น 350.00",
       labelDate: "วันที่โอน",
       labelTime: "เวลาที่โอน",
-      labelSlip: "แนบรูปสลิป (ไม่บังคับ)",
+      labelSlip: "แนบรูปสลิป",
       slipNote: "ℹ️ หากไม่สามารถอัปโหลดรูปได้ รบกวนส่งสลิปทาง DM: @custhesun",
       btnSubmit: "ยืนยันการแจ้งโอน ✨",
       statusTitle: "🚚 เช็คสถานะ 🚚",
@@ -420,7 +419,7 @@
       amountPlaceholder: "e.g., 350.00",
       labelDate: "Transfer Date",
       labelTime: "Transfer Time",
-      labelSlip: "Attach Slip (Optional)",
+      labelSlip: "Attach Slip",
       slipNote: "ℹ️ If you cannot upload the slip, please send it via DM: @custhesun",
       btnSubmit: "Confirm Payment ✨",
       statusTitle: "🚚 Check Status 🚚",
@@ -545,14 +544,13 @@
     event.preventDefault();
     const t = translations[currentLang];
     const btn = document.getElementById("submitBtn");
-    btn.innerText = currentLang === 'th' ? "กำลังบันทึกข้อมูล... ⏳" : "Submitting... ⏳";
+    btn.innerText = currentLang === 'th' ? "กำลังตรวจสอบสลิป... ⏳" : "Verifying slip... ⏳";
     btn.disabled = true;
 
     const currentOrderId = document.getElementById('orderIdField').value;
     const fileInput = document.getElementById('slipField');
     const file = fileInput.files[0];
 
-    // ถ้ามีการแนบไฟล์ ให้แปลงเป็น Base64 แล้วค่อยส่ง ถ้าไม่มีให้ส่งค่าว่างไป
     if (file) {
       const reader = new FileReader();
       reader.onload = function(e) {
@@ -599,7 +597,7 @@
         document.getElementById('confirmedOrderId').innerText = orderId;
         document.getElementById('successCard').style.display = 'block';
       } else {
-        showToast(t.toastError);
+        showToast(data.error || t.toastError);
       }
       btn.innerText = t.btnSubmit;
       btn.disabled = false;
