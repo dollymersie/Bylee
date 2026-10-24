@@ -41,31 +41,71 @@
       box-shadow: 0 10px 30px rgba(137, 207, 240, 0.2);
       border: 3px dashed var(--pastel-blue-dark);
       position: relative;
-      overflow: hidden;
+      overflow: hidden; /* Prevent scroll issues */
       display: flex;
       flex-direction: column;
     }
     
-    .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; position: relative; z-index: 50; }
     
-    .home-icon-btn {
+    /* ปุ่ม Hamburger Menu */
+    .hamburger-btn {
       background: var(--pastel-blue-dark);
       color: white;
       border: none;
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
-      font-size: 18px;
+      font-size: 20px;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(137, 207, 240, 0.4);
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding-bottom: 3px; /* จัดกึ่งกลางไอคอน */
     }
-    .home-icon-btn:hover {
-      transform: scale(1.1);
+    .hamburger-btn:hover {
+      transform: scale(1.05);
     }
+    
+    /* กล่อง Dropdown เมนู */
+    .nav-dropdown {
+      position: absolute;
+      top: 55px;
+      left: 0;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      border: 2px solid var(--pastel-blue);
+      display: none;
+      flex-direction: column;
+      width: 160px;
+      z-index: 100;
+      overflow: hidden;
+      animation: slideDown 0.2s ease-out forwards;
+    }
+    .nav-dropdown.show { display: flex; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .nav-dropdown button {
+      background: none;
+      border: none;
+      padding: 12px 15px;
+      text-align: left;
+      font-family: 'Kanit', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-color);
+      cursor: pointer;
+      border-bottom: 1px dashed var(--pastel-blue);
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-dropdown button:last-child { border-bottom: none; }
+    .nav-dropdown button:hover { background: var(--pastel-blue); color: #1E3A8A; }
     
     .lang-toggle-btn { background: var(--pastel-yellow-dark); border: none; padding: 8px 14px; border-radius: 20px; font-family: 'Kanit', sans-serif; font-weight: 600; font-size: 13px; color: #9D8A00; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s; white-space: nowrap; margin-left: 8px; display: inline-flex; align-items: center; gap: 5px; }
     .lang-toggle-btn:hover { background-color: var(--pastel-yellow); }
@@ -86,7 +126,6 @@
     .home-action-btn.status-btn { background-color: var(--pastel-yellow-dark); color: #9D8A00; }
     .home-action-btn.status-btn:hover { background-color: var(--pastel-yellow); transform: translateY(-2px); }
 
-    /* ปรับขนาดปุ่ม X ให้เล็กลงและเว้นระยะห่างด้านบน */
     .social-btn { display: inline-flex; align-items: center; gap: 8px; background-color: var(--white); color: #1DA1F2; text-decoration: none; padding: 8px 18px; border-radius: 25px; font-weight: 500; font-size: 14px; border: 2px solid var(--pastel-blue); box-shadow: 0 4px 8px rgba(137, 207, 240, 0.2); transition: all 0.2s; margin-top: 25px; }
     .social-btn:hover { transform: translateY(-3px); background-color: var(--pastel-blue); color: var(--white); }
     .x-icon { font-weight: bold; font-size: 15px; }
@@ -153,8 +192,19 @@
 <body>
 
 <div class="app-container">
+  <!-- เมนูด้านบน -->
   <div class="top-header">
-    <button class="home-icon-btn" onclick="openTab('homeTab')" title="หน้าหลัก">🏠</button>
+    <div style="position: relative;">
+      <button class="hamburger-btn" onclick="toggleMenu(event)" title="เมนู">☰</button>
+      
+      <!-- Dropdown เมนู 3 ตัวเลือก -->
+      <div id="navMenu" class="nav-dropdown">
+        <button onclick="navigateFromMenu('homeTab')" data-key="menuHome">🏠 หน้าแรก</button>
+        <button onclick="navigateFromMenu('paymentTab')" data-key="menuPayment">💸 แจ้งชำระเงิน</button>
+        <button onclick="navigateFromMenu('statusTab')" data-key="menuStatus">🚚 เช็คสถานะ</button>
+      </div>
+    </div>
+    
     <button class="lang-toggle-btn" onclick="toggleLanguage()">🌐 <span id="langLabel">TH / EN</span></button>
   </div>
 
@@ -168,7 +218,6 @@
       <button class="home-action-btn status-btn" onclick="openTab('statusTab')" data-key="btnHomeStatus">🚚 เช็คสถานะ</button>
     </div>
 
-    <!-- ย้ายปุ่ม X มาไว้ด้านล่างสุด -->
     <div>
       <a href="https://x.com/custhesun" target="_blank" class="social-btn">
         <span class="x-icon">𝕏</span> @custhesun
@@ -294,6 +343,9 @@
 
   const translations = {
     th: {
+      menuHome: "🏠 หน้าแรก",
+      menuPayment: "💸 แจ้งชำระเงิน",
+      menuStatus: "🚚 เช็คสถานะ",
       shippingInfo: "จัดส่งสินค้าทุกวันเสาร์ - อาทิตย์ 📦",
       btnHomePayment: "💸 แจ้งชำระเงิน",
       btnHomeStatus: "🚚 เช็คสถานะ",
@@ -341,6 +393,9 @@
       statusThanks: "ขอบคุณที่อุดหนุนร้าน BYLEE นะคะ 💛"
     },
     en: {
+      menuHome: "🏠 Home",
+      menuPayment: "💸 Payment",
+      menuStatus: "🚚 Status",
       shippingInfo: "Shipping every Saturday - Sunday 📦",
       btnHomePayment: "💸 Submit Payment",
       btnHomeStatus: "🚚 Check Status",
@@ -416,6 +471,31 @@
   function generateOrderNumber() {
     const randomNum = Math.floor(100000 + Math.random() * 900000);
     return "XH" + randomNum;
+  }
+  
+  // เปิด-ปิด เมนู Hamburger
+  function toggleMenu(event) {
+    event.stopPropagation();
+    document.getElementById('navMenu').classList.toggle('show');
+  }
+
+  // กดเลือกเมนู
+  function navigateFromMenu(tabId) {
+    openTab(tabId);
+    document.getElementById('navMenu').classList.remove('show');
+  }
+
+  // ปิดเมนูเมื่อคลิกพื้นที่อื่น
+  window.onclick = function(event) {
+    if (!event.target.matches('.hamburger-btn')) {
+      var dropdowns = document.getElementsByClassName("nav-dropdown");
+      for (var i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
   }
 
   function openTab(tabId) {
