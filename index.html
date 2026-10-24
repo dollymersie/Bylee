@@ -47,9 +47,25 @@
     }
     
     .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .nav-tabs { display: flex; gap: 8px; background: var(--bg-color); padding: 6px; border-radius: 30px; flex: 1; }
-    .nav-btn { flex: 1; border: none; background: transparent; padding: 8px 4px; border-radius: 20px; font-family: 'Kanit', sans-serif; font-weight: 500; font-size: 13px; color: var(--text-light); cursor: pointer; transition: all 0.3s ease; text-align: center; }
-    .nav-btn.active { background-color: var(--pastel-blue-dark); color: var(--white); box-shadow: 0 4px 10px rgba(137, 207, 240, 0.4); }
+    
+    .home-icon-btn {
+      background: var(--pastel-blue-dark);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(137, 207, 240, 0.4);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .home-icon-btn:hover {
+      transform: scale(1.1);
+    }
     
     .lang-toggle-btn { background: var(--pastel-yellow-dark); border: none; padding: 8px 14px; border-radius: 20px; font-family: 'Kanit', sans-serif; font-weight: 600; font-size: 13px; color: #9D8A00; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s; white-space: nowrap; margin-left: 8px; display: inline-flex; align-items: center; gap: 5px; }
     .lang-toggle-btn:hover { background-color: var(--pastel-yellow); }
@@ -62,9 +78,17 @@
     .home-layout { text-align: center; }
     .hero-image { width: 180px; height: 180px; object-fit: cover; border-radius: 50%; border: 5px solid var(--pastel-yellow); box-shadow: 0 6px 15px rgba(0,0,0,0.1); margin: 10px auto 20px auto; display: block; }
     .badge-info { background-color: var(--pastel-yellow-dark); color: #9D8A00; padding: 8px 20px; border-radius: 20px; font-size: 15px; font-weight: 500; display: inline-block; margin-bottom: 25px; }
-    .social-btn { display: inline-flex; align-items: center; gap: 10px; background-color: var(--white); color: #1DA1F2; text-decoration: none; padding: 12px 25px; border-radius: 30px; font-weight: 600; font-size: 16px; border: 2px solid var(--pastel-blue); box-shadow: 0 4px 10px rgba(137, 207, 240, 0.2); transition: all 0.2s; }
+    .social-btn { display: inline-flex; align-items: center; gap: 10px; background-color: var(--white); color: #1DA1F2; text-decoration: none; padding: 12px 25px; border-radius: 30px; font-weight: 600; font-size: 16px; border: 2px solid var(--pastel-blue); box-shadow: 0 4px 10px rgba(137, 207, 240, 0.2); transition: all 0.2s; margin-bottom: 25px; }
     .social-btn:hover { transform: translateY(-3px); background-color: var(--pastel-blue); color: var(--white); }
     .x-icon { font-weight: bold; font-size: 18px; }
+    
+    .home-action-container { display: flex; flex-direction: column; gap: 12px; }
+    .home-action-btn { width: 100%; padding: 16px; border-radius: 20px; font-family: 'Kanit', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .home-action-btn.payment-btn { background-color: var(--pastel-blue-dark); color: white; }
+    .home-action-btn.payment-btn:hover { background-color: #6CB4EE; transform: translateY(-2px); }
+    .home-action-btn.status-btn { background-color: var(--pastel-yellow-dark); color: #9D8A00; }
+    .home-action-btn.status-btn:hover { background-color: var(--pastel-yellow); transform: translateY(-2px); }
+
     .warning-box { background-color: var(--pastel-yellow); border: 1px dashed #F4D03F; color: #B8860B; padding: 12px; border-radius: var(--border-radius-md); font-size: 14px; text-align: center; margin-bottom: 20px; }
     
     .bank-card { background: linear-gradient(135deg, var(--pastel-blue) 0%, var(--pastel-yellow) 100%); padding: 15px; border-radius: var(--border-radius-md); display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
@@ -77,65 +101,20 @@
     .btn-copy { background: white; color: var(--pastel-blue-dark); border: 2px solid white; padding: 8px 12px; border-radius: 12px; font-family: 'Kanit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
     .btn-copy:hover { background: var(--pastel-blue-dark); color: white; }
     
-    .order-input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-      width: 100%;
-    }
-    .order-input-wrapper input {
-      width: 100% !important;
-      padding-right: 90px !important;
-    }
-    .order-input-wrapper .btn-copy-inside {
-      position: absolute;
-      right: 6px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: white;
-      color: var(--pastel-blue-dark);
-      border: 2px solid white;
-      padding: 6px 14px;
-      border-radius: 9px;
-      font-family: 'Kanit', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      transition: 0.2s;
-    }
-    .order-input-wrapper .btn-copy-inside:hover {
-      background-color: var(--pastel-blue-dark);
-      color: white;
-      border-color: var(--pastel-blue-dark);
-    }
+    .order-input-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
+    .order-input-wrapper input { width: 100% !important; padding-right: 90px !important; }
+    .order-input-wrapper .btn-copy-inside { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: white; color: var(--pastel-blue-dark); border: 2px solid white; padding: 6px 14px; border-radius: 9px; font-family: 'Kanit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: 0.2s; }
+    .order-input-wrapper .btn-copy-inside:hover { background-color: var(--pastel-blue-dark); color: white; border-color: var(--pastel-blue-dark); }
 
     .payment-form { display: flex; flex-direction: column; gap: 12px; width: 100%; }
     .form-group { display: flex; flex-direction: column; gap: 5px; width: 100%; }
     .form-group.row { display: flex; flex-direction: row; gap: 8px; width: 100%; justify-content: space-between; }
     
-    .form-group.date-time-95 input {
-      width: 95% !important;
-      max-width: 95% !important;
-      margin-left: 0;
-      margin-right: auto;
-    }
+    .form-group.date-time-95 input { width: 95% !important; max-width: 95% !important; margin-left: 0; margin-right: auto; }
 
     label { font-size: 13px; font-weight: 500; color: #5BA4E5; padding-left: 5px; }
     
-    input, textarea { 
-      width: 100% !important; 
-      max-width: 100% !important; 
-      box-sizing: border-box !important; 
-      padding: 12px; 
-      border: 2px solid var(--pastel-blue); 
-      border-radius: 12px; 
-      font-family: 'Kanit', sans-serif; 
-      font-size: 14px; 
-      background-color: #FAFAFA; 
-      outline: none; 
-      transition: border-color 0.2s; 
-    }
+    input, textarea { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; padding: 12px; border: 2px solid var(--pastel-blue); border-radius: 12px; font-family: 'Kanit', sans-serif; font-size: 14px; background-color: #FAFAFA; outline: none; transition: border-color 0.2s; }
     input:focus, textarea:focus { border-color: var(--pastel-blue-dark); background-color: white; }
     input[readonly] { background-color: var(--pastel-blue); color: #1E3A8A; font-weight: 600; }
     input[type="file"] { padding: 8px; background: white; border: 2px dashed var(--pastel-blue-dark); cursor: pointer; }
@@ -143,33 +122,11 @@
     .btn-submit { background-color: var(--pastel-blue-dark); color: white; border: none; padding: 15px; border-radius: 25px; font-family: 'Kanit', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 12px rgba(137, 207, 240, 0.4); transition: transform 0.2s; width: 100%; }
     .btn-submit:hover { transform: translateY(-2px); }
     
-    .btn-success-action {
-      width: 100%; 
-      padding: 14px; 
-      border-radius: 14px; 
-      font-family: 'Kanit', sans-serif; 
-      font-size: 17px; 
-      font-weight: 600; 
-      cursor: pointer; 
-      border: none;
-      transition: 0.2s;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-    }
-    .btn-check-status {
-      background-color: #FFB6C1; 
-      color: #7A3E48; 
-      margin-bottom: 10px;
-    }
-    .btn-check-status:hover {
-      background-color: #FFA6B5;
-    }
-    .btn-new-order {
-      background-color: var(--pastel-yellow-dark); 
-      color: #9D8A00;
-    }
-    .btn-new-order:hover {
-      background-color: var(--pastel-yellow);
-    }
+    .btn-success-action { width: 100%; padding: 14px; border-radius: 14px; font-family: 'Kanit', sans-serif; font-size: 17px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; box-shadow: 0 3px 8px rgba(0,0,0,0.08); }
+    .btn-check-status { background-color: #FFB6C1; color: #7A3E48; margin-bottom: 10px; }
+    .btn-check-status:hover { background-color: #FFA6B5; }
+    .btn-new-order { background-color: var(--pastel-yellow-dark); color: #9D8A00; }
+    .btn-new-order:hover { background-color: var(--pastel-yellow); }
 
     .search-container { display: flex; gap: 10px; margin-bottom: 20px; width: 100%; }
     .search-container input { flex: 1; margin: 0; }
@@ -195,22 +152,24 @@
 
 <div class="app-container">
   <div class="top-header">
-    <div class="nav-tabs">
-      <button class="nav-btn active" onclick="openTab('homeTab', this)" data-key="tabHome">🏠 หน้าหลัก</button>
-      <button class="nav-btn" onclick="openTab('paymentTab', this)" data-key="tabPayment">💸 ชำระเงิน</button>
-      <button class="nav-btn" onclick="openTab('statusTab', this)" data-key="tabStatus">🚚 สถานะ</button>
-    </div>
+    <button class="home-icon-btn" onclick="openTab('homeTab')" title="หน้าหลัก">🏠</button>
     <button class="lang-toggle-btn" onclick="toggleLanguage()">🌐 <span id="langLabel">TH / EN</span></button>
   </div>
 
   <div id="homeTab" class="tab-content active home-layout">
     <h2 class="page-title">✨ BYLEE ✨</h2>
     <img src="https://t1.blockdit.com/photos/2020/11/5fb952383d4b9b0cc0fd7d2e_800x0xcover_3aaaqsST.jpg" alt="Shin-chan" class="hero-image">
-    <div class="badge-info" data-key="shippingInfo">ส่งสินค้าทุกวันเสาร์ - อาทิตย์ 📦</div>
+    <div class="badge-info" data-key="shippingInfo">จัดส่งสินค้าทุกวันเสาร์ - อาทิตย์ 📦</div>
+    
     <div>
       <a href="https://x.com/custhesun" target="_blank" class="social-btn">
         <span class="x-icon">𝕏</span> @custhesun
       </a>
+    </div>
+
+    <div class="home-action-container">
+      <button class="home-action-btn payment-btn" onclick="openTab('paymentTab')" data-key="btnHomePayment">💸 แจ้งชำระเงิน</button>
+      <button class="home-action-btn status-btn" onclick="openTab('statusTab')" data-key="btnHomeStatus">🚚 เช็คสถานะ</button>
     </div>
   </div>
 
@@ -327,15 +286,14 @@
 <div id="toastMessage" class="toast">ข้อความ</div>
 
 <script>
-  // ลิงก์ Web App ล่าสุดที่อัปเดตเรียบร้อยแล้ว
+  // ลิงก์ Web App ล่าสุด
   const API_URL = "https://script.google.com/macros/s/AKfycbwcCjQ0vS6rSCqG7ob9W_DORXpMIykeKCoxFRljBQHaMRADJGYw7Pakz9-ZA6L-fktvNQ/exec";
 
   const translations = {
     th: {
-      tabHome: "🏠 หน้าหลัก",
-      tabPayment: "💸 ชำระเงิน",
-      tabStatus: "🚚 สถานะ",
-      shippingInfo: "ส่งสินค้าทุกวันเสาร์ - อาทิตย์ 📦",
+      shippingInfo: "จัดส่งสินค้าทุกวันเสาร์ - อาทิตย์ 📦",
+      btnHomePayment: "💸 แจ้งชำระเงิน",
+      btnHomeStatus: "🚚 เช็คสถานะ",
       paymentTitle: "💸 Payment 💸",
       successHead: "🎉 แจ้งชำระเงินสำเร็จ!",
       successDesc: "รบกวนจำเลขออเดอร์ เพื่อนำไปเช็คสถานะการจัดส่งค่ะ",
@@ -380,10 +338,9 @@
       statusThanks: "ขอบคุณที่อุดหนุนร้าน BYLEE นะคะ 💛"
     },
     en: {
-      tabHome: "🏠 Home",
-      tabPayment: "💸 Payment",
-      tabStatus: "🚚 Status",
       shippingInfo: "Shipping every Saturday - Sunday 📦",
+      btnHomePayment: "💸 Submit Payment",
+      btnHomeStatus: "🚚 Check Status",
       paymentTitle: "💸 Payment 💸",
       successHead: "🎉 Payment Submitted!",
       successDesc: "Please save your Order ID to check your shipping status.",
@@ -458,11 +415,9 @@
     return "XH" + randomNum;
   }
 
-  function openTab(tabId, btnElement) {
+  function openTab(tabId) {
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById(tabId).classList.add('active');
-    btnElement.classList.add('active');
 
     if(tabId === 'paymentTab') {
       const orderField = document.getElementById('orderIdField');
@@ -475,8 +430,7 @@
   function goToStatusCheck() {
     const orderId = document.getElementById('confirmedOrderId').innerText;
     document.getElementById('searchInput').value = orderId;
-    const statusTabBtn = document.querySelectorAll('.nav-btn')[2];
-    openTab('statusTab', statusTabBtn);
+    openTab('statusTab');
     searchStatus();
   }
 
