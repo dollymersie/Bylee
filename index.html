@@ -78,9 +78,6 @@
     .home-layout { text-align: center; }
     .hero-image { width: 180px; height: 180px; object-fit: cover; border-radius: 50%; border: 5px solid var(--pastel-yellow); box-shadow: 0 6px 15px rgba(0,0,0,0.1); margin: 10px auto 20px auto; display: block; }
     .badge-info { background-color: var(--pastel-yellow-dark); color: #9D8A00; padding: 8px 20px; border-radius: 20px; font-size: 15px; font-weight: 500; display: inline-block; margin-bottom: 25px; }
-    .social-btn { display: inline-flex; align-items: center; gap: 10px; background-color: var(--white); color: #1DA1F2; text-decoration: none; padding: 12px 25px; border-radius: 30px; font-weight: 600; font-size: 16px; border: 2px solid var(--pastel-blue); box-shadow: 0 4px 10px rgba(137, 207, 240, 0.2); transition: all 0.2s; margin-bottom: 25px; }
-    .social-btn:hover { transform: translateY(-3px); background-color: var(--pastel-blue); color: var(--white); }
-    .x-icon { font-weight: bold; font-size: 18px; }
     
     .home-action-container { display: flex; flex-direction: column; gap: 12px; }
     .home-action-btn { width: 100%; padding: 16px; border-radius: 20px; font-family: 'Kanit', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -89,6 +86,11 @@
     .home-action-btn.status-btn { background-color: var(--pastel-yellow-dark); color: #9D8A00; }
     .home-action-btn.status-btn:hover { background-color: var(--pastel-yellow); transform: translateY(-2px); }
 
+    /* ปรับขนาดปุ่ม X ให้เล็กลงและเว้นระยะห่างด้านบน */
+    .social-btn { display: inline-flex; align-items: center; gap: 8px; background-color: var(--white); color: #1DA1F2; text-decoration: none; padding: 8px 18px; border-radius: 25px; font-weight: 500; font-size: 14px; border: 2px solid var(--pastel-blue); box-shadow: 0 4px 8px rgba(137, 207, 240, 0.2); transition: all 0.2s; margin-top: 25px; }
+    .social-btn:hover { transform: translateY(-3px); background-color: var(--pastel-blue); color: var(--white); }
+    .x-icon { font-weight: bold; font-size: 15px; }
+    
     .warning-box { background-color: var(--pastel-yellow); border: 1px dashed #F4D03F; color: #B8860B; padding: 12px; border-radius: var(--border-radius-md); font-size: 14px; text-align: center; margin-bottom: 20px; }
     
     .bank-card { background: linear-gradient(135deg, var(--pastel-blue) 0%, var(--pastel-yellow) 100%); padding: 15px; border-radius: var(--border-radius-md); display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
@@ -161,15 +163,16 @@
     <img src="https://t1.blockdit.com/photos/2020/11/5fb952383d4b9b0cc0fd7d2e_800x0xcover_3aaaqsST.jpg" alt="Shin-chan" class="hero-image">
     <div class="badge-info" data-key="shippingInfo">จัดส่งสินค้าทุกวันเสาร์ - อาทิตย์ 📦</div>
     
+    <div class="home-action-container">
+      <button class="home-action-btn payment-btn" onclick="openTab('paymentTab')" data-key="btnHomePayment">💸 แจ้งชำระเงิน</button>
+      <button class="home-action-btn status-btn" onclick="openTab('statusTab')" data-key="btnHomeStatus">🚚 เช็คสถานะ</button>
+    </div>
+
+    <!-- ย้ายปุ่ม X มาไว้ด้านล่างสุด -->
     <div>
       <a href="https://x.com/custhesun" target="_blank" class="social-btn">
         <span class="x-icon">𝕏</span> @custhesun
       </a>
-    </div>
-
-    <div class="home-action-container">
-      <button class="home-action-btn payment-btn" onclick="openTab('paymentTab')" data-key="btnHomePayment">💸 แจ้งชำระเงิน</button>
-      <button class="home-action-btn status-btn" onclick="openTab('statusTab')" data-key="btnHomeStatus">🚚 เช็คสถานะ</button>
     </div>
   </div>
 
